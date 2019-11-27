@@ -1,0 +1,16 @@
+{% if form.errors %}
+    {% for field in form %}
+    {% for error in field.errors %}
+        <p> {{ errors }} </p>
+    {% endfor %}
+    {% endfor %}
+{% endif %}
+
+
+<form action="/register" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+{% csrf_token %}
+{{form.as_p}}
+<button id = "submit" class="btn vd_bg-green vd_white width-100" type="submit" value="submit">Submit</button>
+</form>
+
+<a href="#">Generate OTP</a>

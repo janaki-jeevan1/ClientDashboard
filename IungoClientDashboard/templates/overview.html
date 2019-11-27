@@ -1,0 +1,35 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.bundle.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.bundle.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.min.js"></script>
+{% csrf_token %}
+<p class="option" id="1"><a href="overview">Clicks</a></p>
+<p class="option" id="2"><a href="overview">Feedbacks</a></p>
+<p class="option" id="3"><a href="overview">Designs, Invoices and Proposals</a></p>
+<p class="option" id="4"><a href="overview">Appointments</a></p>
+
+
+<div id="chart">
+
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+      $('.option').click(function(event){
+            event.preventDefault();
+            var id = this.id;
+
+            $.ajax({
+                url:'/overview',
+                data: {"id": id},
+                type : "GET",
+                success: function(data){
+                    $("#chart").html(data);
+                },
+            });
+      });
+  });
+
+</script>

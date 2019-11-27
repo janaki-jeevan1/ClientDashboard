@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=1600, initial-scale=1, maximum-scale=1">
+      <title>Iungo Advanced Technologies</title>
+      <!-- styles -->
+      <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+      <link rel="stylesheet" href="/static/style/main.css">
+      <!-- javascripts -->
+      <script src="/static/scripts/jquery-1.11.1.min.js"></script>
+   </head>
+   <body>
+      <header>
+         <div class="logo">
+            <img src="/static/images/logo.png" alt="logo">
+         </div>
+      </header>
+      <nav class="carousel">
+         <div class="userProfile">
+            <div id="user">
+               <div class="imgtag">
+                  <img src="images/user.jpg" alt="user">
+               </div>
+               <div class="name">
+                  <p>Alex John</p>
+               </div>
+            </div>
+         </div>
+         <div class="navItems">
+            <div class="menuBtns">
+               <ul>
+                  <li><a  id="setting" href="#">Settings &nbsp; <i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                  <li><a href="#">Logout &nbsp; <i class="fa fa-power-off" aria-hidden="true"></i></a></li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+      <nav class="vertical-menu">
+         <div id="sidebar-wrapper">
+           <div id="btn-triangle-left"></div>
+            <ul id="sidebar-nav">
+               <li>
+                  <a href="#">
+                  <span class="imgs"><img src="images/overview.svg" alt=""></span>
+                  <span class="btnText">Overview</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <span class="imgs"><img src="images/appointments.svg" alt=""></span>
+                  <span class="btnText">Appointments</span>
+                  </a>
+               </li>
+               <li>
+                  <a class="arrowBtn" href="#">
+                  <span class="imgs"><img src="images/iungocloud.svg" alt=""></span>
+                  <span class="btnText">Iungo Cloud</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <span class="imgs"><img src="images/profilesettings.svg" alt=""></span>
+                  <span class="btnText">Profile Settings</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <span class="imgs"><img src="images/feedbacks.svg" alt=""></span>
+                  <span class="btnText">Feedbacks</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <span class="imgs"><img src="images/notification.svg" alt=""></span>
+                  <span class="btnText">Notification</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="#">
+                  <span class="imgs"><img src="images/reports.svg" alt=""></span>
+                  <span class="btnText">Reports</span>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </nav>
+      <aside class="mainSection">
+         <form class="mainForm" enctype="multipart/form-data" action="/" method="POST" role="form">
+            {% csrf_token %}
+            <div class="mrSelector">
+               <p class="label">Prefix</p>
+               {{form.prefix}}
+            </div>
+            <div class="mrName">
+               <label for="userName">Name<sup>*</sup></label>
+               <input id="userName" type="text" name="userName" required >
+            </div>
+            <br style="clear: both;">
+            <div class="Gender">
+               <p>Gender<sup>*</sup></p>
+               <br>
+               <input id="male" class="radio-custom" name="age" type="radio" >
+               <label for="male" class="radio-custom-label">Male</label>
+               <input id="female" class="radio-custom" name="age" type="radio" >
+               <label for="female" class="radio-custom-label">Female</label>
+            </div>
+            <div class="emailIDForm">
+               <label for="emailID">Email-id<sup>*</sup></label><br>
+               <input id="emailID" type="email" name="emailID" placeholder="email Id"  required >
+            </div>
+            <div class="phoneForm">
+               <label class="contactLabel">Contact Number</label><br>
+               <label class="label">Primary Number</label><br>
+               {{form.mobile_phone}}
+            </div>
+            <div class="phoneForm">
+               <label>Secondary Number</label><br>
+               {{form.secondary_phone}}
+            </div>
+            <div class="phoneForm">
+               <label>Telephone Number</label><br>
+               {{form.tel_phone}}
+            </div>
+            <div class="textareas">
+               <p class="label">About Me/ Description</p>
+               <textarea name="name" rows="20" cols="80"></textarea>
+               <p style="float: right; font-size: 18px;">250 characters long</p>
+            </div>
+            <div class="qualifications">
+               <p class="label">Qualifications<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector ">
+                  {{form.qualification}}
+               </div>
+            </div>
+            <br style="clear: both;">
+            <div class="certifications">
+               <label for="certificationsID">Certifications<sup>*</sup></label><br>
+               <input id="certificationsID" type="text" name="certificationsID" required >
+            </div>
+            <div class="yearsofexperience">
+               <p class="label">Years Of Experience<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector ">
+                  {{form.experience}}
+               </div>
+            </div>
+            <br style="clear: both;">
+            <div class="imageUpload">
+               <p class="label">Project Images<sup>*</sup> </p>
+               <div class="upload">
+                  <p>Drag and drop here</p>
+               </div>
+            </div>
+            <div class="submitBtn">
+               <input type="submit" value="Submit"/>
+            </div>
+         </form>
+      </aside>
+      <script src="scripts/main.js"></script>
+   </body>
+</html>
