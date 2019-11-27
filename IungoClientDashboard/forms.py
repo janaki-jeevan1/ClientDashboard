@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
+from allauth.account.forms import LoginForm
 
 GENDER_CHOICES = (
     ('MALE', 'MALE'),
@@ -20,6 +21,15 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields.pop('password2')
+
+class CustomLoginForm(LoginForm):
+
+    def login(self, *args, **kwargs):
+
+        # Add your own processing here.
+
+        # You must return the original result.
+        return super(CustomLoginForm, self).login(*args, **kwargs)
 
 class PortfolioForm(forms.ModelForm):
 

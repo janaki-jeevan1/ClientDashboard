@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 from datetime import date
 from .validations import validate_file_extension
+
 import datetime, os
 
 from django.core.files.storage import FileSystemStorage
@@ -49,7 +50,7 @@ def change_file_path(instance, filename):
 
     filetype = filename.split(".")[-1].lower()
     filename = filename + "." + filetype
-    path = "MyANSRSource/uploads/" + str(datetime.datetime.now().year) + "/" + str(
+    path = "IungoClientDashboard/uploads/" + str(datetime.datetime.now().year) + "/" + str(
         datetime.datetime.now().month) + "/" + str(datetime.datetime.now().day) + "/"
     os_path = os.path.join(path, filename)
     return os_path
@@ -74,7 +75,6 @@ class Category(models.Model):
 
     def __unicode__(self):
         return u'{0}'.format(self.name)
-
 
 class sub_category(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30)

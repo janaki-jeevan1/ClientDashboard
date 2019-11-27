@@ -14,6 +14,8 @@ from .forms import *
 from django.template.context_processors import csrf
 from django.views.generic import View
 from random import randint
+import re
+# from .commands.sms import send_sms
 import urllib
 from contextlib import closing
 import json
@@ -24,15 +26,6 @@ def random_with_N_digits(n):
     range_start = 10**(n-1)
     range_end = (10**n)-1
     return randint(range_start, range_end)
-
-# def sendSMS(apikey, numbers, sender, message):
-#     data = urllib.urlencode({'apikey': apikey, 'numbers': numbers,
-#                                    'message': message, 'sender': sender})
-#     data = data.encode('utf-8')
-#     request = urllib2.Request("https://api.textlocal.in/send/?", data)
-#     with closing(urllib2.urlopen(request)) as response:
-#         fr = response.read()
-#     return fr
 
 def sms_user(number, user):
     otp = random_with_N_digits(4)
@@ -51,11 +44,19 @@ def register(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.is_active = 1
+            name = re.split(r'[`\-=~!@#$%^&*()_+\[\]{};\'\\:"|<,./<>?]', form.cleaned_data["username"])
+            if len(name) == 1:
+                obj.first_name = name[0]
+                obj.last_name = name[1]
+                obj.username = name[0]+'.'+name[1]
+            elif len(name) > 1:
+                obj.first_name = name[0]
+                obj.last_name = ' '.join([str(elem) for elem in name[1:-1]])
+                obj.username = name[0] + '.' + name[1]
+            obj.username = form.cleaned_data["mobile_phone"]
             obj.save()
             obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
             obj.save()
-            sendSMS('b2717b892bf6b9ed79fbc53baa5bd8360e7e09a5910cf334c2d3f6410f028904', '+91' + form.cleaned_data['mobile_phone'],
-                    'IUNGO', 'This is your message')
             context["user"] = obj.username
             return render(request, 'client_dashboard.html', context)
         else:
