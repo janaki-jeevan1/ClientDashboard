@@ -132,8 +132,8 @@ class Portfolio(models.Model):
     profile_pic = models.ImageField(upload_to=content_file_name, blank=True, null=True, verbose_name="Profile Picture")
     location = models.CharField(verbose_name="location", max_length=30)
     client = models.BooleanField(verbose_name="Client", default=0)
-    # category = models.ForeignKey(Category)
-    # sub_category = models.ForeignKey(sub_category)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    sub_category = models.ForeignKey(sub_category, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return u'{0}'.format(self.user)

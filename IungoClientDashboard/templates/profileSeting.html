@@ -6,21 +6,21 @@
       <title>Iungo Advanced Technologies</title>
       <!-- styles -->
       <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-      <link rel="stylesheet" href="/static/style/main.css">
+      <link rel="stylesheet" href="/static/css/main.css">
       <!-- javascripts -->
-      <script src="/static/scripts/jquery-1.11.1.min.js"></script>
+      <script src="/static/js/jquery-1.11.1.min.js"></script>
    </head>
    <body>
       <header>
          <div class="logo">
-            <img src="/static/images/logo.png" alt="logo">
+            <img src="/static/img/logo.png" alt="logo">
          </div>
       </header>
       <nav class="carousel">
          <div class="userProfile">
             <div id="user">
                <div class="imgtag">
-                  <img src="images/user.jpg" alt="user">
+                  <img src="/static/img/user.jpg" alt="user">
                </div>
                <div class="name">
                   <p>Alex John</p>
@@ -42,43 +42,43 @@
             <ul id="sidebar-nav">
                <li>
                   <a href="#">
-                  <span class="imgs"><img src="images/overview.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/overview.svg" alt=""></span>
                   <span class="btnText">Overview</span>
                   </a>
                </li>
                <li>
                   <a href="#">
-                  <span class="imgs"><img src="images/appointments.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/appointments.svg" alt=""></span>
                   <span class="btnText">Appointments</span>
                   </a>
                </li>
                <li>
                   <a class="arrowBtn" href="#">
-                  <span class="imgs"><img src="images/iungocloud.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/iungocloud.svg" alt=""></span>
                   <span class="btnText">Iungo Cloud</span>
                   </a>
                </li>
                <li>
                   <a href="#">
-                  <span class="imgs"><img src="images/profilesettings.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/profilesettings.svg" alt=""></span>
                   <span class="btnText">Profile Settings</span>
                   </a>
                </li>
                <li>
                   <a href="#">
-                  <span class="imgs"><img src="images/feedbacks.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/feedbacks.svg" alt=""></span>
                   <span class="btnText">Feedbacks</span>
                   </a>
                </li>
                <li>
                   <a href="#">
-                  <span class="imgs"><img src="images/notification.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/notification.svg" alt=""></span>
                   <span class="btnText">Notification</span>
                   </a>
                </li>
                <li>
                   <a href="#">
-                  <span class="imgs"><img src="images/reports.svg" alt=""></span>
+                  <span class="imgs"><img src="/static/img/reports.svg" alt=""></span>
                   <span class="btnText">Reports</span>
                   </a>
                </li>
@@ -134,10 +134,6 @@
                </div>
             </div>
             <br style="clear: both;">
-            <div class="certifications">
-               <label for="certificationsID">Certifications<sup>*</sup></label><br>
-               <input id="certificationsID" type="text" name="certificationsID" required >
-            </div>
             <div class="yearsofexperience">
                <p class="label">Years Of Experience<sup>*</sup> </p>
                <div class="mrSelector qualifiSector ">
@@ -145,8 +141,15 @@
                </div>
             </div>
             <br style="clear: both;">
+            <div class="budget">
+               <p class="label">Budget(In Lacs)<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector ">
+                  {{form.budget}}
+               </div>
+            </div>
+            <br style="clear: both;">
             <div class="imageUpload">
-               <p class="label">Project Images<sup>*</sup> </p>
+               <p class="label">Project images<sup>*</sup> </p>
                <div class="upload">
                   <p>Drag and drop here</p>
                </div>
@@ -156,6 +159,6 @@
             </div>
          </form>
       </aside>
-      <script src="scripts/main.js"></script>
+      <script src="/static/js/main.js"></script>
    </body>
 </html>

@@ -30,7 +30,7 @@ def random_with_N_digits(n):
 def sms_user(number, user):
     otp = random_with_N_digits(4)
 
-def register(request):
+def customer_register(request):
 
     if request.method == "GET":
         context = {}
@@ -44,23 +44,85 @@ def register(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.is_active = 1
-            name = re.split(r'[`\-=~!@#$%^&*()_+\[\]{};\'\\:"|<,./<>?]', form.cleaned_data["username"])
-            if len(name) == 1:
-                obj.first_name = name[0]
-                obj.last_name = name[1]
-                obj.username = name[0]+'.'+name[1]
-            elif len(name) > 1:
-                obj.first_name = name[0]
-                obj.last_name = ' '.join([str(elem) for elem in name[1:-1]])
-                obj.username = name[0] + '.' + name[1]
+            obj.email = form.cleaned_data["email"]
             obj.username = form.cleaned_data["mobile_phone"]
             obj.save()
             obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
+            obj.portfolio.client = 0
+            obj.save()
+            context["user"] = obj.username
+            return render(request, 'customer_dashboard.html', context)
+        else:
+            return render(request, 'register.html', {'form':form})
+
+def client_register(request):
+
+    if request.method == "GET":
+        context = {}
+        context.update(csrf(request))
+        context['form'] = RegistrationForm()
+        return render_to_response('register.html', context)
+
+    if request.method == 'POST':
+        context = {}
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.is_active = 1
+            obj.email = form.cleaned_data["email"]
+            obj.username = form.cleaned_data["mobile_phone"]
+            obj.save()
+            obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
+            obj.portfolio.client = 1
             obj.save()
             context["user"] = obj.username
             return render(request, 'client_dashboard.html', context)
         else:
             return render(request, 'register.html', {'form':form})
+
+def auth_view(request):
+    username = request.POST.get('username','')
+    email = request.POST.get('email','')
+    password = request.POST.get('password','')
+    if username and password:
+        user = auth.authenticate(username=username, password=password)
+        try:
+            userobj = User.objects.get(username=username)
+        except User.DoesNotExist:
+            messages.error(request, 'Phone number does not exist, please register and try again.')
+            return render(request, 'login.html')
+    elif email and password:
+        user = auth.authenticate(email=email, password=password)
+        try:
+            userobj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, 'Email does not exist, Please register and try again.')
+            return render(request, 'login.html')
+    elif username and email and password:
+        user = auth.authenticate(username=username, password=password)
+        try:
+            userobj = User.objects.get(username=username)
+        except User.DoesNotExist:
+            messages.error(request, 'Phone number or email does not exist, please register and try again.')
+            return render(request, 'login.html')
+    else:
+        user = None
+    if user is not None and userobj.is_active is True:
+        auth.login(request, user)
+        return HttpResponseRedirect('/')
+    else:
+        messages.error(request, 'Invalid Username or password')
+        return render(request,'login.html')
+
+def client_login(request):
+
+    if request.method == 'GET':
+        context = {}
+        return render(request, 'login.html', context)
+
+    if request.method == 'POST':
+        context = {}
+        return render(request, 'login.html', context)
 
 class Dashboard(View):
     template_name = "client_dashboard.html"

@@ -2,7 +2,7 @@
 <html lang="en">
 
 {% load i18n %}
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
     <head>
 
         <meta charset="utf-8">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-md-4 login-form-2">
                     <h3>Login to IUNGO</h3>
-                    <form class="login" method="POST" action="{% url 'account_login' %}">
+                    <form class="login" method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
                       <div class="form-group phoneForms">
                           <label for="phone">Phone Number</label>
