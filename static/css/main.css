@@ -163,6 +163,11 @@ left: 60px !important;
 	background-color: #87e0ed;
 }
 
+#sidebar-nav li a.active{
+background-color: #87e0ed;
+color: #fff;
+}
+
 #sidebar-nav li a .imgs {
 	display: inline-block;
 	width: 60px;
@@ -442,7 +447,7 @@ left: 60px !important;
 .submitBtn {
 	border: none;
 	height: 200px;
-	z-index: -1;
+	top: 20px;
     position: relative;
 }
 
@@ -452,3 +457,4 @@ left: 60px !important;
 	cursor: pointer;
 	border-radius: 5px;
 }
+

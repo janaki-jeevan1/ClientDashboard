@@ -23,9 +23,9 @@ PREFIX_CHOICES = (
 
 RATING_CHOICES = [(i,i) for i in range(1,6)]
 
-EXPERIENCE_CHOICES = [(i,i) for i in range(51)]
+EXPERIENCE_CHOICES = [(str(i),str(i)) for i in range(51)]
 
-BUDGET_CHOICES = [(i,i) for i in range(101)]
+BUDGET_CHOICES = [(str(i),str(i)) for i in range(101)]
 
 QUALIFICATION_CHOICES = (
     ('UG', 'UNDER GRADUATE'),
@@ -117,8 +117,10 @@ class Project(models.Model):
 
 class Portfolio(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    experience = models.CharField(verbose_name="Experience", max_length=10, choices=EXPERIENCE_CHOICES, blank=False, null=False)
-    qualification = models.CharField(verbose_name="Qualification", max_length=20, choices=QUALIFICATION_CHOICES, blank=False, null=False)
+    experience = models.CharField(verbose_name="Experience", max_length=10, choices=EXPERIENCE_CHOICES, blank=False,
+                                  null=False)
+    qualification = models.CharField(verbose_name="Qualification", max_length=20, choices=QUALIFICATION_CHOICES,
+                                     blank=False, null=False)
     budget = models.CharField(verbose_name="Budget", max_length=20, choices=BUDGET_CHOICES)
     prefix = models.CharField(verbose_name="Prefix", max_length=3, choices=PREFIX_CHOICES)
     gender = models.CharField(verbose_name="Gender", max_length=10, choices=GENDER_CHOICES)

@@ -6,6 +6,7 @@ from IungoClientDashboard import views
 urlpatterns = [
 
     url(r'^portfolio/$', PortfolioView.as_view(), name=u'profile'),
+    url(r'^portfolio/(?P<user_id>\d+)/$', PortfolioView.as_view(), name=u'profile'),
     url(r'^$', Dashboard.as_view(), name=u'dashboard'),
     url(r'^appointment_scheduler/$', AppointmentScheduler.as_view(), name=u'appointment_scheduler'),
     url(r'^client_register$', views.client_register, name=u'client_register'),

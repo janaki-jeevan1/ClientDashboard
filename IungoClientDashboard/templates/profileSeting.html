@@ -23,7 +23,7 @@
                   <img src="/static/img/user.jpg" alt="user">
                </div>
                <div class="name">
-                  <p>Alex John</p>
+                  <p>{{user.first_name}} {{user.last_name}}</p>
                </div>
             </div>
          </div>
@@ -59,7 +59,7 @@
                   </a>
                </li>
                <li>
-                  <a href="#">
+                  <a class="active" href="#">
                   <span class="imgs"><img src="/static/img/profilesettings.svg" alt=""></span>
                   <span class="btnText">Profile Settings</span>
                   </a>
@@ -106,13 +106,13 @@
                <label for="female" class="radio-custom-label">Female</label>
             </div>
             <div class="emailIDForm">
-               <label for="emailID">Email-id<sup>*</sup></label><br>
-               <input id="emailID" type="email" name="emailID" placeholder="email Id"  required >
+               <label for="id_email">Email-id<sup>*</sup></label><br>
+               <input disabled="disabled" value="{{user.email}}">
             </div>
             <div class="phoneForm">
                <label class="contactLabel">Contact Number</label><br>
                <label class="label">Primary Number</label><br>
-               {{form.mobile_phone}}
+               <input disabled="disabled" value="{{user.username}}">
             </div>
             <div class="phoneForm">
                <label>Secondary Number</label><br>
@@ -124,7 +124,7 @@
             </div>
             <div class="textareas">
                <p class="label">About Me/ Description</p>
-               <textarea name="name" rows="20" cols="80"></textarea>
+               {{form.about_me}}
                <p style="float: right; font-size: 18px;">250 characters long</p>
             </div>
             <div class="qualifications">
@@ -134,8 +134,8 @@
                </div>
             </div>
             <br style="clear: both;">
-            <div class="yearsofexperience">
-               <p class="label">Years Of Experience<sup>*</sup> </p>
+            <div class="experience">
+               <p class="label">Experience(In years)<sup>*</sup> </p>
                <div class="mrSelector qualifiSector ">
                   {{form.experience}}
                </div>

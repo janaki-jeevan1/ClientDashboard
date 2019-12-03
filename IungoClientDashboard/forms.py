@@ -1,4 +1,3 @@
-
 import allauth.app_settings
 from allauth import app_settings
 from allauth.utils import get_username_max_length, set_form_field_order
@@ -15,9 +14,11 @@ GENDER_CHOICES = (
     ('FEMALE', 'FEMALE'),
 )
 
+
 class MyModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return "{}".format(obj.name)
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(max_length=40)
@@ -42,8 +43,9 @@ class RegistrationForm(UserCreationForm):
         self.fields['password1'].widget.attrs['placeholder'] = 'Please make sure your password is more than 8 letters'
         self.fields.pop('password2')
 
-class PortfolioForm(forms.ModelForm):
 
+class PortfolioForm(forms.ModelForm):
+    about_me = forms.CharField(widget=forms.Textarea(attrs={'rows': 10, 'cols': 30}))
     category = MyModelChoiceField(
         queryset=Category.objects.all(),
         required=False, )
@@ -51,7 +53,16 @@ class PortfolioForm(forms.ModelForm):
 
     class Meta:
         model = Portfolio
-        fields = ['user', 'prefix', 'gender', 'date_of_birth', 'mobile_phone', 'secondary_phone', 'tel_phone',
-                  'experience', 'qualification', 'profile_pic', 'location', 'about_me', 'budget', 'category',
+        fields = ['prefix', 'secondary_phone', 'tel_phone',
+                  'experience', 'qualification', 'profile_pic', 'about_me', 'budget', 'category',
                   'sub_category',
                   ]
+
+    def __init__(self, *args, **kwargs):
+        super(PortfolioForm, self).__init__(*args, **kwargs)
+        self.fields['prefix'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['experience'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['budget'].widget.attrs['class'] = \
+            "form-control"

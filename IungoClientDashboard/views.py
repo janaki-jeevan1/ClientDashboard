@@ -10,6 +10,7 @@ from django.contrib import auth
 from django.shortcuts import render, get_object_or_404
 from .models import *
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.template.context_processors import csrf
 from django.views.generic import View
@@ -66,7 +67,6 @@ def client_register(request):
     if request.method == 'POST':
         context = {}
         form = RegistrationForm(request.POST)
-        import ipdb; ipdb.set_trace()
         if form.is_valid():
             obj = form.save(commit=False)
             obj.is_active = 1
@@ -76,8 +76,7 @@ def client_register(request):
             obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
             obj.portfolio.client = 1
             obj.save()
-            context["user"] = obj.username
-            return render(request, 'client_dashboard.html', context)
+            return redirect('/client_login')
         else:
             print (form.errors)
             return render(request, 'register.html', {'form':form})
@@ -111,7 +110,7 @@ def auth_view(request):
         user = None
     if user is not None and userobj.is_active is True:
         auth.login(request, user)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/portfolio')
     else:
         messages.error(request, 'Invalid Username or password')
         return render(request,'login.html')
@@ -230,6 +229,7 @@ class PortfolioView(View):
         return render(request, self.template_name, {'form': form, 'user': user})
 
     def post(self, request, id=None):
+        # import ipdb; ipdb.set_trace()
         if id:
             instance = get_object_or_404(Portfolio, id=id)
             form = PortfolioForm(request.POST, request.FILES or None, instance=instance)
@@ -237,7 +237,7 @@ class PortfolioView(View):
                 form.save()
                 form = PortfolioForm()
         else:
-            form = PortfolioForm(request.POST, request.FILES or None)
+            form = PortfolioForm(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
                 form = PortfolioForm()
