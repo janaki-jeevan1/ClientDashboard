@@ -137,6 +137,7 @@ ul.navbar-nav {
     color: #a9a9a9;
     position: relative;
     display: inline-block;
+    text-align: center;
   }
 
 .flexNavBar li a:after{
@@ -171,6 +172,7 @@ ul.navbar-nav {
 
  .flexNavBar2 {
    margin-top: 0px;
+   text-align: center;
  }
 
 .flexNavBar2 li{
@@ -185,8 +187,6 @@ ul.navbar-nav {
   position: relative;
   display: inline-block;
 }
-
-
 
 
 
@@ -315,15 +315,14 @@ padding: 0px;
   vertical-align: middle;
   cursor: pointer;
   margin-right: 20px;
-  border-radius: 8px;
+  border-radius: 7px;
 }
 
 .loginFormCheck input:checked + label:after {
   content: '';
   display: block;
   position: absolute;
-
-  top: 6px;
+  top: 7px;
   left: 9px;
   width: 6px;
   height: 14px;
@@ -338,25 +337,468 @@ padding: 0px;
 .socialmedia{
 	width: 100%;
 	text-align: left;
-}
-.socialmedia p{
-  float: left;
-}
-.socialmedia .media  {
-float: left;
+  position: relative;
 }
 
-.socialmedia .media  {
-  list-style: none;
+.socialmedia .centermedia{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.socialmedia .media img{
+
+.socialmedia .centermedia img {
   width: 30px;
 }
+.haveAccount{
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.haveAccount a{
+  color: #fbbc06;
+  font-weight: 500;
+}
+/* navBG */
+.navBG{
+  background: url(/static/img/backgrounds/log_page_banner.jpg);
+  background-position: 100%;
+  background-size: cover;
+  width: 100%;
+  height: 68px;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* nav login Menu */
+.navloginMenu{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.navloginMenu .loginCentermenu ul{
+  list-style: none;
+}
+
+.navloginMenu .loginCentermenu ul li{
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.navloginMenu .loginCentermenu ul li a{
+  position: relative;
+  padding: 0px 0px;
+  padding: 15px 40px;
+  background: #fff;
+  border: 2px solid #27cae2;
+  color: #27cae2;
+  font-weight: 500;
+  border-radius: 5px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.navloginMenu .loginCentermenu ul li a:hover{
+  background: #27cae2;
+  color: #fff;
+}
 
 
+.navloginMenu .loginCentermenu ul li a:after{
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 10px;
+  left: 50%;
+  bottom: -5px;
+  position: absolute;
+  background: #35cae0;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+  border-radius: 10px;
+  bottom: -25px;
+}
+
+.navloginMenu .loginCentermenu ul li a:hover:after {
+  width: 100%;
+  left: 0;
+}
 
 /********************************** login form ended ******************************************/
 
+/********************************** Listing Page start ***************************************/
+.listingNavMenu1{
+
+  padding: 30px;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+}
+
+.listingNavInput{
+  width: 800px;
+}
+
+.listingNavMenu2{
+    padding: 15px;
+    background-color: #35cae0;
+    width: 100%;;
+    height: 80px;
+    display: flex;
+
+}
+
+.listingNavMenu2 select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #35cae0;
+  background-image: none;
+}
+/* Remove IE arrow */
+.listingNavMenu2 select::-ms-expand {
+  display: none;
+}
+/* Custom Select */
+.listingNavMenu2 .select {
+  position: relative;
+  display: flex;
+  width: 200px;
+  height: 50px;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1.5px solid #fff;
+  margin-left: 20px;
+}
+ .listingNavMenu2 select {
+  flex: 1;
+  padding: 0 .5em;
+  padding-left: 30px;
+  color: #fff;
+  cursor: pointer;
+}
+/* Arrow */
+.listingNavMenu2 .select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  color: #fff;
+  background: #2c3e50
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+
+}
+/* Transition */
+.listingNavMenu2 .select:hover::after {
+  color: #fff;
+}
+
+
+.sortBy{
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1;
+      color: #f4f4f4;
+      margin: 15px 30px;
+      width: 100%;
+}
+
+.listingPath{
+  width: 100%;
+  height: 40px;
+}
+.listingPath .paths{
+  margin-left: 45px;
+  margin-top: 5px;
+  color: #35cae0;
+  font-weight:500;
+
+}
+
+/* filters side menu */
+
+.listing_filtersProfile{
+width: 100%;
+height: auto;
+}
+
+.listing_filter_bar{
+  width: 300px;
+  height: 600px;
+  border: 2px solid #dfdfdf;
+  border-radius: 10px;
+  box-shadow: 0 14px 18px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.12);
+  padding: 20px;
+}
+.listing_filter_bar
+.heading{
+  color: #35cae0;
+  font-weight: 600;
+}
+.listing_filter_bar
+.head{
+  color: #000;
+  font-weight: 500;
+}
+.listing_filtersProfile
+.filtersListStyles label {
+  color: #a6a6a6;
+  font-weight: 500;
+  padding-left: 0px;
+}
+
+.listing_filtersProfile
+.filtersListStyles li{
+  list-style: none;
+}
+
+.mainslider{
+  position: relative;
+  z-index: 9999
+}
+
+.mainslider input {
+  box-shadow: 0;
+  outline: 0;
+}
+.mainslider .range-slider {
+  /* width: 300px; */
+  margin: auto;
+  position: relative;
+  height: 6em;
+}
+.mainslider .range-slider svg {
+  position: absolute;
+  left: 0;
+  top: 30px;
+}
+.mainslider .range-slider input[type=range] {
+  position: absolute;
+  left: 0;
+  top: 20px;
+}
+.mainslider .valueInputs{
+  position: absolute;
+  bottom: 0px;
+}
+
+.mainslider input[type=number] {
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 1.6em;
+  -moz-appearance: textfield;
+}
+.mainslider input[type=number]::-webkit-outer-spin-button,
+.mainslider input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.mainslider input[type=number]:invalid,
+.mainslider input[type=number]:out-of-range {
+  border: 2px solid #ff6347;
+}
+.mainslider input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+}
+.mainslider input[type=range]:focus {
+  outline: none;
+}
+.mainslider input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #35cae0;
+}
+.mainslider input[type=range]:focus::-ms-fill-lower {
+  background: #35cae0;
+}
+.mainslider input[type=range]:focus::-ms-fill-upper {
+  background: #35cae0;
+}
+.mainslider input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: #35cae0;
+  border-radius: 1px;
+  box-shadow: none;
+  border: 0;
+}
+.mainslider input[type=range]::-webkit-slider-thumb {
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px 0px 0px #000;
+  border: 1px solid #f8bd37;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #ffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+.mainslider input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: #2497e3;
+  border-radius: 1px;
+  box-shadow: none;
+  border: 0;
+}
+.mainslider input[type=range]::-moz-range-thumb {
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px 0px 0px #000;
+  border: 1px solid #2497e3;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #a1d0ff;
+  cursor: pointer;
+}
+.mainslider input[type=range]::-ms-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.mainslider input[type=range]::-ms-fill-lower,
+.mainslider input[type=range]::-ms-fill-upper {
+  background: #2497e3;
+  border-radius: 1px;
+  box-shadow: none;
+  border: 0;
+}
+.mainslider input[type=range]::-ms-thumb {
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px 0px 0px #000;
+  border: 1px solid #2497e3;
+  height: 18px;
+  width: 18px;
+  border-radius: 25px;
+  background: #a1d0ff;
+  cursor: pointer;
+}
+
+/* main listing card */
+.mainListingcard{
+  width: 1000px;
+  padding: 30px;
+  height: 350px;
+  background-color: #fff;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  box-shadow: 0 14px 18px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.12);
+}
+
+
+.mainListingcard .profileImg img {
+  width: 150px;
+  border-radius: 30px;
+  border: 2px solid #cccccc;
+}
+.mainListingcard .profileImg{
+
+  float: left;
+}
+
+/* pagination */
+
+.mainPagination{
+  float: right;
+  margin-right: 170px;
+}
+
+.paginationPosition{
+margin-right: 120px;
+}
+.pagination>li>a, .pagination>li>span{
+  color: #35cae0;
+}
+.pagination>.active>a,
+.pagination>.active>a:focus,
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
+.pagination>.active>span:hover {
+  background-color: #35cae0;
+  border-color: #35cae0;
+}
+
+
+.profile_textfield{
+  width: auto;
+  height: 300px;
+}
+
+.mainListingcard #Name{
+  padding: 0px;
+  margin: 0px;
+  color: #35cae0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 15px;
+  font-size: 22px;
+}
+
+.mainListingcard .right{
+  margin-left: 40px;
+
+}
+.mainListingcard .left,
+.mainListingcard .right {
+  display: inline-block;
+  padding: 30px;
+  font-size: 25px;
+}
+.mainListingcard .left img{
+  width: 30px;
+  height: auto;
+}
+.userDesignation{
+  position: relative;
+    left: 29px;
+    font-size: 25px;
+}
+
+.viewProfile, .bookAppointment {
+  padding: 5px 60px;
+  background-color: #35cae0;
+  border: 1px solid #35cae0;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.viewProfile:hover, .bookAppointment:hover{
+  color: #35cae0;
+  background-color: #fff;
+
+}
+
+/********************************* Listing page ended ****************************************/
 /***** Features *****/
 
 .features-box { margin-top: 30px; text-align: left; }
@@ -404,8 +846,8 @@ footer ul li{
 
 	.section-description p { padding: 0; }
 
-	.top-content { padding: 50px 0 80px 0; }
-	.top-content .text { padding-top: 20px; }
+	.top-content { padding: 50px 0 80px 0;}
+	.top-content .text { padding-top: 20px;}
 
 	.features-box { text-align: center; }
 	.features-box h3 { margin-top: 5px; padding-top: 10px; }
@@ -420,6 +862,7 @@ footer ul li{
   .flexNavBar li{
         margin: 27px 54px;
         padding: 0px;
+        text-align: center;
 
   }
 
@@ -441,8 +884,10 @@ footer ul li{
 
 }
 
-
 /* Retina-ize images/icons */
+
+
+
 
 @media
 only screen and (-webkit-min-device-pixel-ratio: 2),

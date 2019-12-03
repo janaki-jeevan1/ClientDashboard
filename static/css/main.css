@@ -38,7 +38,7 @@ header .logo {
 }
 
 .carousel {
-	background: url("../img/banner.jpg");
+	background: url("/static/img/banner.jpg");
 	z-index: 999;
 	position: relative;
 	background-position: 100%;
@@ -284,7 +284,7 @@ left: 60px !important;
 	font-size: 18px;
 	border: 1px solid #00c4de;
 	outline: none;
-	background: url('../img/drop-down-arrow.svg') no-repeat right #fff;
+	background: url('/static/img/drop-down-arrow_white.svg') no-repeat right #fff;
 	-webkit-appearance: button;
 	appearance: button;
 	outline: none;
@@ -442,6 +442,8 @@ left: 60px !important;
 .submitBtn {
 	border: none;
 	height: 200px;
+	z-index: -1;
+    position: relative;
 }
 
 .submitBtn input[type="submit"] {

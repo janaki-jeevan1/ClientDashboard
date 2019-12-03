@@ -66,6 +66,7 @@ def client_register(request):
     if request.method == 'POST':
         context = {}
         form = RegistrationForm(request.POST)
+        import ipdb; ipdb.set_trace()
         if form.is_valid():
             obj = form.save(commit=False)
             obj.is_active = 1
@@ -78,6 +79,7 @@ def client_register(request):
             context["user"] = obj.username
             return render(request, 'client_dashboard.html', context)
         else:
+            print (form.errors)
             return render(request, 'register.html', {'form':form})
 
 def auth_view(request):
@@ -241,3 +243,8 @@ class PortfolioView(View):
                 form = PortfolioForm()
 
         return render(request, self.template_name, {'form': form})
+
+def load_sub_category(request):
+    category_id = request.GET.get('category')
+    sub_categories = sub_category.objects.filter(category_id=category_id).order_by('name')
+    return render(request, 'sub_categories.html', {'sub_categories': sub_categories})

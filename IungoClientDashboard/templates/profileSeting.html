@@ -86,7 +86,7 @@
          </div>
       </nav>
       <aside class="mainSection">
-         <form class="mainForm" enctype="multipart/form-data" action="/" method="POST" role="form">
+         <form id="profile_form" class="mainForm" enctype="multipart/form-data" action="{% url 'profile' %}" method="POST" role="form">
             {% csrf_token %}
             <div class="mrSelector">
                <p class="label">Prefix</p>
@@ -148,10 +148,24 @@
                </div>
             </div>
             <br style="clear: both;">
-            <div class="imageUpload">
-               <p class="label">Project images<sup>*</sup> </p>
+            <div class="Upload">
+               <p class="label">Image<sup>*</sup> </p>
                <div class="upload">
-                  <p>Drag and drop here</p>
+                  {{ form.profile_pic }}
+               </div>
+            </div>
+            <br style="clear: both;">
+            <div class="category">
+               <p class="label">Category<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector">
+                  {{ form.category }}
+               </div>
+            </div>
+            <br style="clear: both;">
+            <div class="sub_category">
+               <p class="label">Sub Category<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector">
+                  {{ form.sub_category }}
                </div>
             </div>
             <div class="submitBtn">
@@ -159,6 +173,27 @@
             </div>
          </form>
       </aside>
-      <script src="/static/js/main.js"></script>
+
+      <script type="text/javascript">
+
+             $("#id_category").change(function () {
+               var categoryId = $(this).val();
+               console.log(categoryId)
+               $.ajax({
+                 url: '{% url 'load_sub_category' %}',
+                 data: {
+                   'category': categoryId
+                 },
+                 success: function (data) {
+                   $("#id_sub_category").html(data);
+                 }
+               });
+
+          });
+       </script>
+
+
+
+
    </body>
 </html>

@@ -12,6 +12,6 @@ def sendSMS(apikey, numbers, sender, message):
     return (fr)
 
 
-resp = sendSMS('vV4ixMZmyok-YTys5TMHMljOCzBrfZDYc6aQzUED2B', '919035857418',
+resp = sendSMS('vV4ixMZmyok-YTys5TMHMljOCzBrfZDYc6aQzUED2B', '919663231429',
                'TXTLCL', 'Hi')
 print(resp)

@@ -360,7 +360,7 @@ padding: 0px;
 }
 /* navBG */
 .navBG{
-  background: url(../img/backgrounds/log_page_banner.jpg);
+  background: url(/static/img/backgrounds/log_page_banner.jpg);
   background-position: 100%;
   background-size: cover;
   width: 100%;

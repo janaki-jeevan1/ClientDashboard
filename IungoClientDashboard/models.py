@@ -74,14 +74,14 @@ class Category(models.Model):
     name = models.CharField(verbose_name="Name", max_length=50)
 
     def __unicode__(self):
-        return u'{0}'.format(self.name)
+        return self.name
 
 class sub_category(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __unicode__(self):
-        return u'{0}'.format(self.name)
+        return self.name
 
 class child_sub_category(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30)
@@ -141,7 +141,9 @@ class Portfolio(models.Model):
 @receiver(post_save, sender=User)
 def create_client_profile(sender, instance, created, **kwargs):
     if created:
-        Portfolio.objects.create(user=instance)
+        category = Category.objects.get(id=1)
+        subcategory = sub_category.objects.get(id=1)
+        Portfolio.objects.create(user=instance, category=category, sub_category=subcategory)
 
 @receiver(post_save, sender=User)
 def save_client_profile(sender, instance, **kwargs):
