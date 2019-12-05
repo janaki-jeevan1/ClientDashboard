@@ -25,7 +25,18 @@ RATING_CHOICES = [(i,i) for i in range(1,6)]
 
 EXPERIENCE_CHOICES = [(str(i),str(i)) for i in range(51)]
 
-BUDGET_CHOICES = [(str(i),str(i)) for i in range(101)]
+BUDGET_CHOICES = (
+    ('0-10', '0-10'),
+    ('11-20', '11-20'),
+    ('21-30', '21-30'),
+    ('31-40', '31-40'),
+    ('41-50', '41-50'),
+    ('51-60', '51-60'),
+    ('61-70', '61-70'),
+    ('71-80', '71-80'),
+    ('81-90', '81-90'),
+    ('91-100', '91-100'),
+)
 
 QUALIFICATION_CHOICES = (
     ('UG', 'UNDER GRADUATE'),
@@ -132,8 +143,6 @@ class Portfolio(models.Model):
     gender = models.CharField(verbose_name="Gender", max_length=10, choices=GENDER_CHOICES)
     mobile_phone = models.CharField(verbose_name="Mobile phone", max_length=10, unique=True, blank=False, null=True)
     secondary_phone = models.CharField(verbose_name="Secondary phone", max_length=10, unique=True, blank=False,
-                                       null=True)
-    tel_phone = models.CharField(verbose_name="Tele phone", max_length=10, unique=True, blank=False,
                                        null=True)
     date_of_birth = models.DateField(verbose_name='Date of Birth', null=True, blank=True)
     about_me = models.CharField(verbose_name="About me ", blank=True, max_length=250)

@@ -20,7 +20,11 @@
          <div class="userProfile">
             <div id="user">
                <div class="imgtag">
-                  <img src="/static/img/user.jpg" alt="user">
+                  {% if user.portfolio.profile_pic %}
+                     <img src="/media/{{user.portfolio.profile_pic}}" alt="user">
+                  {% else %}
+                     <img src="/static/img/empty.png" alt="user">
+                  {% endif %}
                </div>
                <div class="name">
                   <p>{{user.first_name}} {{user.last_name}}</p>
@@ -88,23 +92,47 @@
       <aside class="mainSection">
          <form id="profile_form" class="mainForm" enctype="multipart/form-data" action="{% url 'profile' %}" method="POST" role="form">
             {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{user.id}}">
             <div class="mrSelector">
                <p class="label">Prefix</p>
                {{form.prefix}}
             </div>
-            <div class="mrName">
-               <label for="userName">Name<sup>*</sup></label>
-               <input id="userName" type="text" name="userName" required >
-            </div>
+            {% if user.first_name %}
+               <div class="mrName">
+                  <label for="userName">Name<sup>*</sup></label>
+                  <input id="userName" type="text" name="userName" value="{{user.first_name}} {{user.last_name}}" disabled >
+                  <h6>Name cannot be changed after submitting once. Name, phone number, email id are the things needs permission to be changed.</h6>
+               </div>
+            {% else %}
+               <div class="mrName">
+                  <label for="userName">Name<sup>*</sup></label>
+                  <input id="userName" type="text" name="userName" required >
+                  <p>Name cannot be changed after submitting once. Name, phone number, email id are the things needs permission to be changed.</p>
+               </div>
+            {% endif %}
             <br style="clear: both;">
-            <div class="Gender">
-               <p>Gender<sup>*</sup></p>
-               <br>
-               <input id="male" class="radio-custom" name="age" type="radio" >
-               <label for="male" class="radio-custom-label">Male</label>
-               <input id="female" class="radio-custom" name="age" type="radio" >
-               <label for="female" class="radio-custom-label">Female</label>
-            </div>
+            {% if user.portfolio.gender == 'MALE'%}
+               <div class="Gender">
+                  <p>Gender<sup>*</sup></p>
+                  <br>
+                  <label for="male" class="radio-custom-label">Male</label>
+               </div>
+            {% elif user.portfolio.gender == 'FEMALE'%}
+               <div class="Gender">
+                  <p>Gender<sup>*</sup></p>
+                  <br>
+                  <label for="female" class="radio-custom-label">Female</label>
+               </div>
+            {% else %}
+               <div class="Gender">
+                  <p>Gender<sup>*</sup></p>
+                  <br>
+                  <input id="male" class="radio-custom" name="male" type="radio" >
+                  <label for="male" class="radio-custom-label">Male</label>
+                  <input id="female" class="radio-custom" name="female" type="radio" >
+                  <label for="female" class="radio-custom-label">Female</label>
+               </div>
+            {% endif %}
             <div class="emailIDForm">
                <label for="id_email">Email-id<sup>*</sup></label><br>
                <input disabled="disabled" value="{{user.email}}">
@@ -117,10 +145,6 @@
             <div class="phoneForm">
                <label>Secondary Number</label><br>
                {{form.secondary_phone}}
-            </div>
-            <div class="phoneForm">
-               <label>Telephone Number</label><br>
-               {{form.tel_phone}}
             </div>
             <div class="textareas">
                <p class="label">About Me/ Description</p>
@@ -189,6 +213,11 @@
                  }
                });
 
+          });
+
+          $(document).ready(function() {
+            var username = document.getElementById('userName').value
+            console.log(username)
           });
        </script>
 

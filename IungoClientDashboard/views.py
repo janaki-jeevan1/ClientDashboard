@@ -9,6 +9,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib import auth
 from django.shortcuts import render, get_object_or_404
 from .models import *
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import *
@@ -228,22 +229,46 @@ class PortfolioView(View):
     template_name = "profileSeting.html"
 
     def get(self, request):
-        form = PortfolioForm()
+
         user = request.user
+        user_details = User.objects.get(id=user.id)
+        data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name,
+                'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
+                'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,
+                'budget': user.portfolio.budget, 'category': user.portfolio.category,
+                'sub_category': user.portfolio.sub_category, 'secondary_phone': user.portfolio.secondary_phone}
+        form = PortfolioForm(initial=data)
         return render(request, self.template_name, {'form': form, 'user': user})
 
-    def post(self, request, id=None):
-        if id:
-            instance = get_object_or_404(Portfolio, id=id)
-            form = PortfolioForm(request.POST, request.FILES or None, instance=instance)
-            if form.is_valid():
-                form.save()
-                form = PortfolioForm()
-        else:
-            form = PortfolioForm(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-                form = PortfolioForm()
+    def post(self, request):
+
+        form = PortfolioForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_id = request.POST.get('user_id')
+            user_details = User.objects.get(id=user_id)
+            username = request.POST.get('userName').split(' ')
+            user_details.first_name = username[0]
+            username.pop(0)
+            user_details.last_name = " ".join(username)
+            user_details.save()
+            male = request.POST.get('male')
+            female = request.POST.get('female')
+            if male == 'on':
+                user_details.portfolio.gender = 'MALE'
+            if female == 'on':
+                user_details.portfolio.gender = 'FEMALE'
+            user_details.save()
+            user_details.portfolio.profile_pic = form.cleaned_data['profile_pic']
+            user_details.portfolio.budget = form.cleaned_data['budget']
+            user_details.portfolio.experience = form.cleaned_data['experience']
+            user_details.portfolio.qualification = form.cleaned_data['qualification']
+            user_details.portfolio.about_me = form.cleaned_data['about_me']
+            user_details.portfolio.category = form.cleaned_data['category']
+            user_details.portfolio.sub_category = form.cleaned_data['sub_category']
+            user_details.portfolio.prefix = form.cleaned_data['prefix']
+            user_details.portfolio.secondary_phone = form.cleaned_data['secondary_phone']
+            user_details.save()
+            form = PortfolioForm()
 
         return render(request, self.template_name, {'form': form})
 

@@ -74,7 +74,7 @@ class PortfolioForm(forms.ModelForm):
 
     class Meta:
         model = Portfolio
-        fields = ['prefix', 'secondary_phone', 'tel_phone',
+        fields = ['prefix', 'secondary_phone',
                   'experience', 'qualification', 'profile_pic', 'about_me', 'budget', 'category',
                   'sub_category',
                   ]
