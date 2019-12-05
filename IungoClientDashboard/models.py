@@ -70,6 +70,16 @@ def content_file_name(instance, filename):
     os_path = os.path.join(path, filename)
     return os_path
 
+class ConfirmationCode(models.Model):
+
+    user = models.ForeignKey(User, default=True, on_delete=models.CASCADE)
+    confirmation_code = models.CharField(verbose_name="Confirmation Code", max_length=100, blank=False, null=False,
+                                         unique=True)
+
+    def __unicode__(self):
+        return u'{0}'.format(
+            self.confirmation_code)
+
 class Category(models.Model):
     name = models.CharField(verbose_name="Name", max_length=50)
 
@@ -95,9 +105,7 @@ class Design(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     design_type = models.ForeignKey(child_sub_category, on_delete=models.CASCADE)
     design_name = models.CharField(verbose_name="Design project Name", max_length=30)
-    design_description = models.CharField(verbose_name="Design Description", max_length=250)
-    last_modified = models.DateField(default=None, blank=False, null=True)
-    file_size = models.CharField(max_length=20)
+    design_images = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Design Images")
 
     def __unicode__(self):
         return u'{0}'.format(self.design_name)
@@ -107,9 +115,7 @@ class Project(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project_type = models.ForeignKey(child_sub_category, on_delete=models.CASCADE)
     project_name = models.CharField(verbose_name="Project Name", max_length=30)
-    project_description = models.CharField(verbose_name="Project Description", max_length=250)
-    last_modified = models.DateField(default=None, blank=False, null=True)
-    file_size = models.CharField(max_length=20)
+    project_images = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Project Images")
 
     def __unicode__(self):
         return u'{0}'.format(self.project_name)

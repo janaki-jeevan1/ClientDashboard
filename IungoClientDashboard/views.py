@@ -15,10 +15,10 @@ from .forms import *
 from django.template.context_processors import csrf
 from django.views.generic import View
 from random import randint
-import re
+import random
+import string
+from django.core.mail import send_mail
 # from .commands.sms import send_sms
-import urllib
-from contextlib import closing
 import json
 
 # Create your views here.
@@ -31,30 +31,34 @@ def random_with_N_digits(n):
 def sms_user(number, user):
     otp = random_with_N_digits(4)
 
-def customer_register(request):
+def send_registration_confirmation(username):
+    # user = request.user
+    user = User.objects.get(username=username)
+    confirmation_code = ''.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(33))
+    ccc = ConfirmationCode(confirmation_code=confirmation_code,user=user)
+    ccc.save()
+    p = ccc
+    title = "Thanks for registration"
+    content = "http://35.154.44.172:8000/confirmation/" + str(p.confirmation_code) + "/" + user.username
+    send_mail(title, content, 'bharath@iungoadvantec.com', [user.email], fail_silently=False)
 
-    if request.method == "GET":
-        context = {}
-        context.update(csrf(request))
-        context['form'] = RegistrationForm()
-        return render_to_response('register.html', context)
+def confirmation(request, confirmation_code, username):
+    # import ipdb; ipdb.set_trace()
+    try:
+        username = User.objects.get(username=username)
+        ccc = ConfirmationCode(confirmation_code=confirmation_code,user=username)
+        if ccc.confirmation_code == confirmation_code and username.date_joined > timezone.make_aware(datetime.datetime.now()-datetime.timedelta(days=1)):
+            username.is_active = True
+            username.save()
+            username.backend='django.contrib.auth.backends.ModelBackend'
+            auth.login(request,username)
+        return HttpResponseRedirect('/welcome')
+    except:
+        return HttpResponseRedirect('/client_register')
 
-    if request.method == 'POST':
-        context = {}
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.is_active = 1
-            obj.email = form.cleaned_data["email"]
-            obj.username = form.cleaned_data["mobile_phone"]
-            obj.save()
-            obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
-            obj.portfolio.client = 0
-            obj.save()
-            context["user"] = obj.username
-            return render(request, 'customer_dashboard.html', context)
-        else:
-            return render(request, 'register.html', {'form':form})
+def welcome(request):
+    context = {}
+    return render(request, 'welcome.html', context)
 
 def client_register(request):
 
@@ -69,16 +73,16 @@ def client_register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.is_active = 1
+            obj.is_active = 0
             obj.email = form.cleaned_data["email"]
             obj.username = form.cleaned_data["mobile_phone"]
             obj.save()
             obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
             obj.portfolio.client = 1
+            send_registration_confirmation(obj.username)
             obj.save()
             return redirect('/client_login')
         else:
-            print (form.errors)
             return render(request, 'register.html', {'form':form})
 
 def auth_view(request):
@@ -229,7 +233,6 @@ class PortfolioView(View):
         return render(request, self.template_name, {'form': form, 'user': user})
 
     def post(self, request, id=None):
-        # import ipdb; ipdb.set_trace()
         if id:
             instance = get_object_or_404(Portfolio, id=id)
             form = PortfolioForm(request.POST, request.FILES or None, instance=instance)

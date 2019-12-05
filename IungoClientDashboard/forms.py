@@ -25,10 +25,11 @@ class RegistrationForm(UserCreationForm):
     mobile_phone = forms.RegexField(max_length=10, required=True, regex=r'^\+?1?\d{9,15}$', widget=forms.TextInput(
         attrs={'class': 'input-sm form-control width-30', 'type': 'tel', 'pattern': '^\+?1?\d{9,15}$'}))
     password1 = forms.CharField(required=True, widget=forms.PasswordInput())
+    password2 = forms.CharField(required=True, widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ['email', 'mobile_phone', 'password1']
+        fields = ['email', 'mobile_phone', 'password1', 'password2']
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
@@ -40,8 +41,28 @@ class RegistrationForm(UserCreationForm):
         self.fields['email'].widget.attrs['placeholder'] = 'Email ID'
         self.fields['password1'].widget.attrs['class'] = \
             "form-control"
-        self.fields['password1'].widget.attrs['placeholder'] = 'Please make sure your password is more than 8 letters'
-        self.fields.pop('password2')
+        self.fields['password1'].widget.attrs['placeholder'] = 'Password should be more than 8 letters and alphanumeric'
+        self.fields['password2'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['password2'].widget.attrs['placeholder'] = 'Password should be more than 8 letters and alphanumeric'
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already exists. Try a different Email-ID")
+        return email
+        # username = self.data['mobile_phone']
+        # if User.objects.filter(username=username).exists():
+        #     raise forms.ValidationError("Phone number already exists. Try a different Phone number")
+
+    def save(self, commit=True):
+        user = super(RegistrationForm, self).save(commit=False)
+
+        user.email = self.cleaned_data['email']
+        # user.username = self.cleaned_data['mobile_phone']
+        if commit:
+            user.save()
+        return user
 
 
 class PortfolioForm(forms.ModelForm):
