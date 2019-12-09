@@ -236,11 +236,16 @@ def load_upload_form(request):
                 form = DesignUploadsForm()
                 designs = Design.objects.filter(user_id=request.user.id)
                 total_user_designs = []
-                for number in range(0, len(designs)):
-                    for design in designs:
-                        if number == int(design.design_number):
+                numbers = []
+                for number in designs:
+                    numbers.append(number.design_number)
+                numbers = list(set(numbers))
+                for design in designs:
+                    for number in numbers:
+                        if int(number) == int(design.design_number):
                             particular_design = Design.objects.filter(user_id=request.user.id, design_number=number)
                             total_user_designs.append(particular_design)
+                            numbers.remove(number)
                 return render(request, 'upload_form.html',
                               {'form': form, 'type': type, 'user': user, 'total_user_designs': total_user_designs})
         elif detail == 'project':
@@ -249,11 +254,16 @@ def load_upload_form(request):
                 form = ProjectUploadsForm()
                 projects = Project.objects.filter(user_id=request.user.id)
                 total_user_projects = []
-                for number in range(0, len(projects)):
-                    for project in projects:
-                        if number == int(project.project_number):
+                numbers = []
+                for number in projects:
+                    numbers.append(number.project_number)
+                numbers = list(set(numbers))
+                for project in projects:
+                    for number in numbers:
+                        if int(number) == int(project.project_number):
                             particular_project = Project.objects.filter(user_id=request.user.id, project_number=number)
                             total_user_projects.append(particular_project)
+                            numbers.remove(number)
                 return render(request, 'upload_form.html',
                               {'form': form, 'type': type, 'user': user, 'total_user_projects': total_user_projects})
         else:
