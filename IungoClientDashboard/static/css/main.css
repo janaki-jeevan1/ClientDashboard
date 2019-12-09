@@ -456,7 +456,17 @@ left: 60px !important;
 	color: #00c4de;
 }
 
-
+.upload_btn{
+    width: 200px;
+	background-color: #fff;
+	cursor: pointer;
+	border-radius: 5px;
+	color: #00c4de;
+	text-decoration: none;
+	padding: 6px 65px;
+	border: 1px solid #00c4de;
+	margin-left: 420px;
+}
 
 /* design Upload page start  */
 .restBtn{
