@@ -225,13 +225,72 @@ class AppointmentScheduler(View):
         context = {}
         return render(request, self.template_name, context)
 
+def load_upload_form(request):
+
+    detail = request.GET.get('detail')
+    user = request.user
+    if detail:
+        if detail == 'design':
+            if request.method == 'GET':
+                type = 1
+                form = DesignUploadsForm()
+                return render(request, 'upload_form.html', {'form': form, 'type': type, 'user':user})
+        elif detail == 'project':
+            if request.method == 'GET':
+                type = 2
+                form = ProjectUploadsForm()
+                return render(request, 'upload_form.html', {'form': form, 'type': type, 'user':user})
+        else:
+            error = 1
+            return render(request, 'designUploading.html', {'error': error, 'user':user})
+    else:
+        error = 1
+        return render(request, 'designUploading.html', {'error': error, 'user':user})
+
+def design_upload(request):
+
+    user = request.user
+    form = DesignUploadsForm()
+    type = 1
+    if request.method == 'POST':
+        type = 1
+        form = DesignUploadsForm(request.POST, request.FILES)
+        files = request.FILES.getlist('design_images')
+        if form.is_valid():
+            obj = form.save(commit=False)
+            for f in files:
+                Design.objects.create(user=request.user, design_type=form.cleaned_data['design_type'],
+                                             design_name=form.cleaned_data['design_name'], design_images=f)
+            return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
+        else:
+            return render(request, 'upload_form.html', {'form': form, 'type': type, 'user': user})
+    return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
+
+def project_upload(request):
+
+    user = request.user
+    form = ProjectUploadsForm()
+    type = 2
+    if request.method == 'POST':
+        type = 2
+        form = ProjectUploadsForm(request.POST, request.FILES)
+        files = request.FILES.getlist('project_images')
+        if form.is_valid():
+            obj = form.save(commit=False)
+            for f in files:
+                Project.objects.create(user=request.user, project_type=form.cleaned_data['project_type'],
+                                      project_name=form.cleaned_data['project_name'], project_images=f)
+            return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
+        else:
+            return render(request, 'upload_form.html', {'form': form, 'type': type, 'user': user})
+    return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
+
 class PortfolioView(View):
     template_name = "profileSeting.html"
 
     def get(self, request):
 
         user = request.user
-        user_details = User.objects.get(id=user.id)
         data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name,
                 'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
                 'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,

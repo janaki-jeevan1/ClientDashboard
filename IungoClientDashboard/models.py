@@ -114,7 +114,7 @@ class child_sub_category(models.Model):
 
 class Design(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    design_type = models.ForeignKey(child_sub_category, on_delete=models.CASCADE)
+    design_type = models.ForeignKey(sub_category, on_delete=models.CASCADE)
     design_name = models.CharField(verbose_name="Design project Name", max_length=30)
     design_images = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Design Images")
 
@@ -124,7 +124,7 @@ class Design(models.Model):
 
 class Project(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project_type = models.ForeignKey(child_sub_category, on_delete=models.CASCADE)
+    project_type = models.ForeignKey(sub_category, on_delete=models.CASCADE)
     project_name = models.CharField(verbose_name="Project Name", max_length=30)
     project_images = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Project Images")
 

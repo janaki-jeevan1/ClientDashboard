@@ -96,6 +96,7 @@
             <div class="mrSelector">
                <p class="label">Prefix</p>
                {{form.prefix}}
+               {{form.prefix.errors}}
             </div>
             {% if user.first_name %}
                <div class="mrName">
@@ -145,16 +146,19 @@
             <div class="phoneForm">
                <label>Secondary Number</label><br>
                {{form.secondary_phone}}
+               {{form.secondary_phone.errors}}
             </div>
             <div class="textareas">
                <p class="label">About Me/ Description</p>
                {{form.about_me}}
+               {{form.about_me.errors}}
                <p style="float: right; font-size: 18px;">250 characters long</p>
             </div>
             <div class="qualifications">
                <p class="label">Qualifications<sup>*</sup> </p>
                <div class="mrSelector qualifiSector ">
                   {{form.qualification}}
+                  {{form.qualification.errors}}
                </div>
             </div>
             <br style="clear: both;">
@@ -162,6 +166,7 @@
                <p class="label">Experience(In years)<sup>*</sup> </p>
                <div class="mrSelector qualifiSector ">
                   {{form.experience}}
+                  {{form.experience.errors}}
                </div>
             </div>
             <br style="clear: both;">
@@ -169,6 +174,7 @@
                <p class="label">Budget(In Lacs)<sup>*</sup> </p>
                <div class="mrSelector qualifiSector ">
                   {{form.budget}}
+                  {{form.budget.erors}}
                </div>
             </div>
             <br style="clear: both;">
@@ -176,6 +182,7 @@
                <p class="label">Image<sup>*</sup> </p>
                <div class="upload">
                   {{ form.profile_pic }}
+                  {{ form.profile_pic.errors }}
                </div>
             </div>
             <br style="clear: both;">
@@ -183,6 +190,7 @@
                <p class="label">Category<sup>*</sup> </p>
                <div class="mrSelector qualifiSector">
                   {{ form.category }}
+                  {{ form.category.errors }}
                </div>
             </div>
             <br style="clear: both;">
@@ -190,11 +198,13 @@
                <p class="label">Sub Category<sup>*</sup> </p>
                <div class="mrSelector qualifiSector">
                   {{ form.sub_category }}
+                  {{ form.sub_category.errors }}
                </div>
             </div>
             <div class="submitBtn">
                <input type="submit" value="Submit"/>
             </div>
+            <a href="/design_upload">Upload</a>
          </form>
       </aside>
 
@@ -215,10 +225,6 @@
 
           });
 
-          $(document).ready(function() {
-            var username = document.getElementById('userName').value
-            console.log(username)
-          });
        </script>
 
 

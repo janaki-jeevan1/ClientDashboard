@@ -64,6 +64,43 @@ class RegistrationForm(UserCreationForm):
             user.save()
         return user
 
+class DesignUploadsForm(forms.ModelForm):
+
+    design_type = MyModelChoiceField(queryset=sub_category.objects.all())
+    design_images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    class Meta:
+        model = Design
+        fields = ['design_type', 'design_name', 'design_images']
+        exclude = ['user']
+
+    def __init__(self, *args, **kwargs):
+        super(DesignUploadsForm, self).__init__(*args, **kwargs)
+        self.fields['design_type'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['design_name'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['design_images'].widget.attrs['class'] = \
+            "form-control"
+
+class ProjectUploadsForm(forms.ModelForm):
+
+    project_type = MyModelChoiceField(queryset=sub_category.objects.all())
+    project_images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    class Meta:
+        model = Project
+        fields = ['project_type', 'project_name', 'project_images']
+        exclude = ['user']
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectUploadsForm, self).__init__(*args, **kwargs)
+        self.fields['project_type'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['project_name'].widget.attrs['class'] = \
+            "form-control"
+        self.fields['project_images'].widget.attrs['class'] = \
+            "form-control"
 
 class PortfolioForm(forms.ModelForm):
     about_me = forms.CharField(widget=forms.Textarea(attrs={'rows': 10, 'cols': 30}))

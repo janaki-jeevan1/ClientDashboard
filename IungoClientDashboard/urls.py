@@ -15,5 +15,8 @@ urlpatterns = [
     url(r'^client_login$', views.client_login, name=u'client_login'),
     url(r'^auth$', views.auth_view, name=u'authenticate'),
     url(r'^overview/$', views.Overview, name=u'overview'),
+    url(r'^design_upload/$', views.design_upload, name=u'design_upload'),
+    url(r'^project_upload/$', views.project_upload, name=u'project_upload'),
     url('load_sub_category$', views.load_sub_category, name='load_sub_category'),
+    url('load_upload_form', views.load_upload_form, name='load_upload_form'),
 ]

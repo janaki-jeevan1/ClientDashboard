@@ -1,0 +1,64 @@
+
+{% if type == 1%}
+        <form class="mainForm" action="/design_upload/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <br style="clear: both;">
+            <div class="designType">
+               <p class="label">Type<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector ">
+                  {{form.design_type}}
+                   {{form.design_type.errors}}
+               </div>
+            </div>
+            <br style="clear: both;">
+            <div class="certifications">
+               <label for="id_design_name">Name<sup>*</sup></label><br>
+               {{form.design_name}}
+               {{form.design_name.errors}}
+            </div>
+            <br style="clear: both;">
+            <div class="imageUpload">
+               <p class="label">Project Images<sup>*</sup> </p>
+               {{form.design_images}}
+               {{form.design_images.errors}}
+            </div>
+            <div class="submitBtn">
+                <div class="restBtn">
+                   <input type="submit" value="Save"/>
+                   <input type="submit" value="Edit"/>
+                    <input type="submit" value="Delete"/>
+                </div>
+            </div>
+         </form>
+{% elif type == 2%}
+        <form class="mainForm" action="/project_upload/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <br style="clear: both;">
+            <div class="designType">
+               <p class="label">Type<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector ">
+                  {{form.project_type}}
+                  {{form.project_type.errors}}
+               </div>
+            </div>
+            <br style="clear: both;">
+            <div class="certifications">
+               <label for="id_project_name">Name<sup>*</sup></label><br>
+               {{form.project_name}}
+               {{form.project_name.errors}}
+            </div>
+            <br style="clear: both;">
+            <div class="imageUpload">
+               <p class="label">Project Images<sup>*</sup> </p>
+               {{form.project_images}}
+               {{form.project_images.errors}}
+            </div>
+            <div class="submitBtn">
+                <div class="restBtn">
+                   <input type="submit" value="Save"/>
+                   <input type="submit" value="Edit"/>
+                    <input type="submit" value="Delete"/>
+                </div>
+            </div>
+         </form>
+{% endif %}
