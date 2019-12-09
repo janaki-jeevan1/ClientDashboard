@@ -19,18 +19,28 @@ from random import randint
 import random
 import string
 from django.core.mail import send_mail
-# from .commands.sms import send_sms
+from .commands.sms.send_sms import sendSMS
 import json
 
 # Create your views here.
+global_otp = []
 
 def random_with_N_digits(n):
     range_start = 10**(n-1)
     range_end = (10**n)-1
     return randint(range_start, range_end)
 
-def sms_user(number, user):
+def sms_user():
     otp = random_with_N_digits(4)
+    return otp
+
+def send_sms_user(request):
+    number = request.GET.get('number')
+    generate_otp = sms_user()
+    resp = sendSMS('vV4ixMZmyok-YTys5TMHMljOCzBrfZDYc6aQzUED2B', '91'+number,
+                   'TXTLCL', 'OTP to login '+str(generate_otp))
+    global_otp.append(generate_otp)
+    return HttpResponse('')
 
 def send_registration_confirmation(username):
     # user = request.user
@@ -40,11 +50,10 @@ def send_registration_confirmation(username):
     ccc.save()
     p = ccc
     title = "Thanks for registration"
-    content = "http://35.154.44.172:8000/confirmation/" + str(p.confirmation_code) + "/" + user.username
+    content = "http://192.168.0.79:8000/confirmation/" + str(p.confirmation_code) + "/" + user.username
     send_mail(title, content, 'bharath@iungoadvantec.com', [user.email], fail_silently=False)
 
 def confirmation(request, confirmation_code, username):
-    # import ipdb; ipdb.set_trace()
     try:
         username = User.objects.get(username=username)
         ccc = ConfirmationCode(confirmation_code=confirmation_code,user=username)
@@ -90,6 +99,7 @@ def auth_view(request):
     username = request.POST.get('username','')
     email = request.POST.get('email','')
     password = request.POST.get('password','')
+    otp = request.POST.get('OTP','')
     if username and password:
         user = auth.authenticate(username=username, password=password)
         try:
@@ -111,10 +121,26 @@ def auth_view(request):
         except User.DoesNotExist:
             messages.error(request, 'Phone number or email does not exist, please register and try again.')
             return render(request, 'login.html')
+    elif username and global_otp:
+        if otp == str(global_otp[0]):
+            user = auth.authenticate(username=username)
+            try:
+                userobj = User.objects.get(username=username)
+                if userobj.is_active is True:
+                    auth.login(request, user)
+                    global_otp.remove(global_otp[0])
+                    return HttpResponseRedirect('/portfolio')
+            except User.DoesNotExist:
+                messages.error(request, 'Phone number does not exist, please register and try again.')
+                return render(request, 'login.html')
+        else:
+            messages.error(request, 'Invalid OTP')
+            return render(request, 'login.html')
     else:
         user = None
     if user is not None and userobj.is_active is True:
         auth.login(request, user)
+        global_otp.remove(global_otp[0])
         return HttpResponseRedirect('/portfolio')
     else:
         messages.error(request, 'Invalid Username or password')

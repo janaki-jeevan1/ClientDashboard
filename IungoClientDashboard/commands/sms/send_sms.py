@@ -10,8 +10,3 @@ def sendSMS(apikey, numbers, sender, message):
     f = urllib.request.urlopen(request, data)
     fr = f.read()
     return (fr)
-
-
-resp = sendSMS('vV4ixMZmyok-YTys5TMHMljOCzBrfZDYc6aQzUED2B', '919663231429',
-               'TXTLCL', 'Hi')
-print(resp)

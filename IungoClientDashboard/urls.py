@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^project_upload/$', views.project_upload, name=u'project_upload'),
     url('load_sub_category$', views.load_sub_category, name='load_sub_category'),
     url('load_upload_form', views.load_upload_form, name='load_upload_form'),
+    url('send_sms', views.send_sms_user, name='send_sms'),
 ]

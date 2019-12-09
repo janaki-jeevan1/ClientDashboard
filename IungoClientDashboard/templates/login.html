@@ -50,8 +50,8 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="top-navbar-1">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Login for BusIness</a></li>
-						<li><a href="#">Login / Register</a></li>
+						<li><a href="/client_login">Login for BusIness</a></li>
+						<li><a href="/client_login">Login / Register</a></li>
 					</ul>
 				</div>
 			</div>
@@ -80,8 +80,8 @@
                             <input type="password" class="form-control" id="password" name="password" placeholder="Your Password " value="" />
                         </div>
                         <div class="form-group otp_field">
-                            <label for="otp">OTP</label>
-                            <input type="text" class="form-control" id="otpText" placeholder="Your OTP" value="" />
+                            <label for="otpText">OTP</label>
+                            <input type="text" class="form-control" id="otpText" name="OTP" placeholder="Your OTP" value="" />
                         </div>
 
                         <div class="form-group loginFormCheck">
@@ -100,10 +100,10 @@
                           <ul class="media">
                               {% load socialaccount %}
                             <li>
-                              <a href="{% provider_login_url "google" %}"><img src="/static/img/media/G.svg" alt="gmail"> </a>
-                              <a href="{% provider_login_url "facebook" %}"><img src="/static/img/media/F.svg" alt="facebook"> </a>
-                              <a href="{% provider_login_url "linkedin_oauth2" %}"><img src="/static/img/media/in.svg" alt="indeed"> </a>
-                              <a href="{% provider_login_url "twitter" %}"><img src="/static/img/media/tw.svg" alt="twitter"> </a>
+                              <a href="{% provider_login_url "google" %}"><img src="/static/img/media/G.png" alt="gmail"> </a>
+                              <a href="{% provider_login_url "facebook" %}"><img src="/static/img/media/F.png" alt="facebook"> </a>
+                              <a href="{% provider_login_url "linkedin_oauth2" %}"><img src="/static/img/media/in.png" alt="indeed"> </a>
+                              <a href="{% provider_login_url "twitter" %}"><img src="/static/img/media/tw.png" alt="twitter"> </a>
                             </li>
                           </ul>
                         </div>
@@ -197,7 +197,27 @@
         <!--[if lt IE 10]>
             <script src="/static/js/placeholder.js"></script>
         <![endif]-->
+        <script type="text/javascript">
 
+            $(document).ready(function(){
+             $("#login_via_otp").click(function () {
+               if($(this).prop("checked") == true){
+                    number = document.getElementById('phone').value;
+                    console.log(number)
+                    $.ajax({
+                         url: '{% url 'send_sms' %}',
+                         data: {
+                           'number': number
+                         },
+                         success: function (data) {
+                           $(".login-form-1").html(data);
+                         }
+                       });
+                }
+            });
+            });
+
+       </script>
     </body>
 
 </html>
