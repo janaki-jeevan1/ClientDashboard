@@ -38,7 +38,7 @@ header .logo {
 }
 
 .carousel {
-	background: url("/static/img/banner.jpg");
+	background: url("../img/banner.jpg");
 	z-index: 999;
 	position: relative;
 	background-position: 100%;
@@ -163,11 +163,6 @@ left: 60px !important;
 	background-color: #87e0ed;
 }
 
-#sidebar-nav li a.active{
-background-color: #87e0ed;
-color: #fff;
-}
-
 #sidebar-nav li a .imgs {
 	display: inline-block;
 	width: 60px;
@@ -282,14 +277,14 @@ color: #fff;
 
 .mrSelector select {
 	position: absolute;
-	padding: 12px;
+	padding: 10px;
 	width: 280px;
 	height: 42px;
 	border: none;
 	font-size: 18px;
 	border: 1px solid #00c4de;
 	outline: none;
-	background: url('/static/img/drop-down-arrow_white.svg') no-repeat right #fff;
+	background: url('../img/drop-down-arrow.svg') no-repeat right #fff;
 	-webkit-appearance: button;
 	appearance: button;
 	outline: none;
@@ -380,7 +375,9 @@ color: #fff;
 .emailIDForm,
 .phoneForm,
 .qualifications,
-.yearsofexperience {
+.yearsofexperience,
+.designOrproject,
+.designType {
 	margin-top: 40px;
 }
 
@@ -409,7 +406,8 @@ color: #fff;
 }
 
 .qualifiSector select,
-.yearsofexperience select {
+.yearsofexperience select,
+.designOrprojectSector select {
 	width: 500px;
 	background-position-x: 465px !important
 }
@@ -436,7 +434,7 @@ color: #fff;
 }
 
 .imageUpload .upload p,
-.submitBtn input[type="submit"] {
+.submitBtn > input[type="submit"], .submitBtn > .restBtn {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -447,14 +445,34 @@ color: #fff;
 .submitBtn {
 	border: none;
 	height: 200px;
-	top: 20px;
-    position: relative;
 }
 
-.submitBtn input[type="submit"] {
+
+.submitBtn input[type="submit"]{
 	width: 200px;
 	background-color: #fff;
 	cursor: pointer;
 	border-radius: 5px;
+	color: #00c4de;
 }
 
+.upload_btn{
+    width: 200px;
+	background-color: #fff;
+	cursor: pointer;
+	border-radius: 5px;
+	color: #00c4de;
+	text-decoration: none;
+	padding: 6px 65px;
+	border: 1px solid #00c4de;
+	margin-left: 420px;
+}
+
+/* design Upload page start  */
+.restBtn{
+    width: 700px;
+}
+.restBtn{
+	color: #00c4de;
+}
+/* design Upload page end */

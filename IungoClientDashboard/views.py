@@ -234,12 +234,28 @@ def load_upload_form(request):
             if request.method == 'GET':
                 type = 1
                 form = DesignUploadsForm()
-                return render(request, 'upload_form.html', {'form': form, 'type': type, 'user':user})
+                designs = Design.objects.filter(user_id=request.user.id)
+                total_user_designs = []
+                for number in range(0, len(designs)):
+                    for design in designs:
+                        if number == int(design.design_number):
+                            particular_design = Design.objects.filter(user_id=request.user.id, design_number=number)
+                            total_user_designs.append(particular_design)
+                return render(request, 'upload_form.html',
+                              {'form': form, 'type': type, 'user': user, 'total_user_designs': total_user_designs})
         elif detail == 'project':
             if request.method == 'GET':
                 type = 2
                 form = ProjectUploadsForm()
-                return render(request, 'upload_form.html', {'form': form, 'type': type, 'user':user})
+                projects = Project.objects.filter(user_id=request.user.id)
+                total_user_projects = []
+                for number in range(0, len(projects)):
+                    for project in projects:
+                        if number == int(project.project_number):
+                            particular_project = Project.objects.filter(user_id=request.user.id, project_number=number)
+                            total_user_projects.append(particular_project)
+                return render(request, 'upload_form.html',
+                              {'form': form, 'type': type, 'user': user, 'total_user_projects': total_user_projects})
         else:
             error = 1
             return render(request, 'designUploading.html', {'error': error, 'user':user})
@@ -258,9 +274,15 @@ def design_upload(request):
         files = request.FILES.getlist('design_images')
         if form.is_valid():
             obj = form.save(commit=False)
+            designs = list(Design.objects.all())
+            if designs:
+                design_number = int(designs[-1].design_number) + 1
+            else:
+                design_number = 1
             for f in files:
                 Design.objects.create(user=request.user, design_type=form.cleaned_data['design_type'],
-                                             design_name=form.cleaned_data['design_name'], design_images=f)
+                                      design_name=form.cleaned_data['design_name'], design_images=f,
+                                      design_number=design_number)
             return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
         else:
             return render(request, 'upload_form.html', {'form': form, 'type': type, 'user': user})
@@ -277,9 +299,15 @@ def project_upload(request):
         files = request.FILES.getlist('project_images')
         if form.is_valid():
             obj = form.save(commit=False)
+            projects = list(Project.objects.all())
+            if projects:
+                project_number = int(projects[-1].project_number) + 1
+            else:
+                project_number = 1
             for f in files:
                 Project.objects.create(user=request.user, project_type=form.cleaned_data['project_type'],
-                                      project_name=form.cleaned_data['project_name'], project_images=f)
+                                       project_name=form.cleaned_data['project_name'], project_images=f,
+                                       project_number=project_number)
             return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
         else:
             return render(request, 'upload_form.html', {'form': form, 'type': type, 'user': user})

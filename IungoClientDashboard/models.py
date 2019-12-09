@@ -117,6 +117,7 @@ class Design(models.Model):
     design_type = models.ForeignKey(sub_category, on_delete=models.CASCADE)
     design_name = models.CharField(verbose_name="Design project Name", max_length=30)
     design_images = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Design Images")
+    design_number = models.CharField(verbose_name="Design Number", max_length=10)
 
     def __unicode__(self):
         return u'{0}'.format(self.design_name)
@@ -127,6 +128,7 @@ class Project(models.Model):
     project_type = models.ForeignKey(sub_category, on_delete=models.CASCADE)
     project_name = models.CharField(verbose_name="Project Name", max_length=30)
     project_images = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Project Images")
+    project_number = models.CharField(verbose_name="project Number", max_length=10)
 
     def __unicode__(self):
         return u'{0}'.format(self.project_name)
