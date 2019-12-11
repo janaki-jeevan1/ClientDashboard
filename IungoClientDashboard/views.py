@@ -42,6 +42,10 @@ def send_sms_user(request):
     global_otp.append(generate_otp)
     return HttpResponse('')
 
+def logout(request):
+    auth.logout(request)
+    return render_to_response('logout.html')
+
 def send_registration_confirmation(username):
     # user = request.user
     user = User.objects.get(username=username)
@@ -89,7 +93,7 @@ def client_register(request):
             obj.save()
             obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
             obj.portfolio.client = 1
-            send_registration_confirmation(obj.username)
+            # send_registration_confirmation(obj.username)
             obj.save()
             return redirect('/client_login')
         else:
@@ -140,7 +144,6 @@ def auth_view(request):
         user = None
     if user is not None and userobj.is_active is True:
         auth.login(request, user)
-        global_otp.remove(global_otp[0])
         return HttpResponseRedirect('/portfolio')
     else:
         messages.error(request, 'Invalid Username or password')
@@ -251,6 +254,56 @@ class AppointmentScheduler(View):
         context = {}
         return render(request, self.template_name, context)
 
+def upload_details(request):
+    if request.method == 'GET':
+        type = request.GET.get('type')
+        if type == '1':
+            user = request.user
+            design_number = request.GET.get('number')
+            design = Design.objects.filter(design_number=design_number)
+            data = {'design_name':design[0].design_name, 'design_type':design[0].design_type}
+            form = DesignUploadsForm(initial=data)
+            return render(request, 'edit_form.html', {'form':form, 'type':type, 'user':user, 'design':design})
+        if type == '2':
+            user = request.user
+            project_number = request.GET.get('number')
+            project = Project.objects.filter(project_number=project_number)
+            data = {'project_name': project[0].project_name, 'project_type': project[0].project_type}
+            form = ProjectUploadsForm(initial=data)
+            return render(request, 'edit_form.html', {'form': form, 'type': type, 'user': user, 'project': project})
+    if request.method == 'POST':
+        type = request.POST.get('type')
+        if type == '1':
+            user = request.user
+            design_number = request.POST.get('design_number')
+            form = DesignUploadsForm(request.POST, request.FILES)
+            files = request.FILES.getlist('design_images')
+            if form.is_valid():
+                obj = form.save(commit=False)
+                for f in files:
+                    Design.objects.create(user=request.user, design_type=form.cleaned_data['design_type'],
+                                          design_name=form.cleaned_data['design_name'], design_images=f,
+                                          design_number=design_number)
+                return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
+            else:
+                return render(request, 'edit_form.html', {'form': form, 'type': type, 'user': user})
+        if type == '2':
+            user = request.user
+            project_number = request.POST.get('project_number')
+            form = ProjectUploadsForm(request.POST, request.FILES)
+            files = request.FILES.getlist('project_images')
+            if form.is_valid():
+                obj = form.save(commit=False)
+                for f in files:
+                    Project.objects.create(user=request.user, project_type=form.cleaned_data['project_type'],
+                                          project_name=form.cleaned_data['project_name'], project_images=f,
+                                          project_number=project_number)
+                return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
+            else:
+                return render(request, 'edit_form.html', {'form': form, 'type': type, 'user': user})
+    else:
+        return render(request, 'designUploading.html', {})
+
 def load_upload_form(request):
 
     detail = request.GET.get('detail')
@@ -273,7 +326,7 @@ def load_upload_form(request):
                             total_user_designs.append(particular_design)
                             numbers.remove(number)
                 return render(request, 'upload_form.html',
-                              {'form': form, 'type': type, 'user': user, 'total_user_designs': total_user_designs})
+                              {'form': form, 'type': type, 'user': user, 'total_user_designs': list(total_user_designs)})
         elif detail == 'project':
             if request.method == 'GET':
                 type = 2
@@ -310,9 +363,12 @@ def design_upload(request):
         files = request.FILES.getlist('design_images')
         if form.is_valid():
             obj = form.save(commit=False)
-            designs = list(Design.objects.all())
+            designs = list(Design.objects.all().values('design_number'))
             if designs:
-                design_number = int(designs[-1].design_number) + 1
+                design_numbers = []
+                for design in designs:
+                    design_numbers.append(int(design['design_number']))
+                design_number = max(set(design_numbers)) + 1
             else:
                 design_number = 1
             for f in files:
@@ -335,9 +391,12 @@ def project_upload(request):
         files = request.FILES.getlist('project_images')
         if form.is_valid():
             obj = form.save(commit=False)
-            projects = list(Project.objects.all())
+            projects = list(Design.objects.all().values('design_number'))
             if projects:
-                project_number = int(projects[-1].project_number) + 1
+                project_numbers = []
+                for project in projects:
+                    project_numbers.append(int(project['project_number']))
+                project_number = max(set(project_numbers)) + 1
             else:
                 project_number = 1
             for f in files:

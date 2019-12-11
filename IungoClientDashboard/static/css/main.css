@@ -7,6 +7,7 @@
 html {
 	/* overflow-y: scroll;
   overflow-x: scroll;  */
+	overflow-x: hidden;
 }
 
 @font-face {
@@ -154,6 +155,10 @@ left: 60px !important;
 	transition: all 0.5s ease;
 
 }
+#sidebar-nav li a.active{
+	background-color: #35cae0;
+	color: #fff;
+}
 .sidebar-nav-toggle{
 	flex-flow: row-reverse !important;
 }
@@ -246,13 +251,26 @@ left: 60px !important;
 	font-family: "ProximaRegular";
 }
 
-.mainForm input {
+.mainForm input[type="text"],
+.mainForm input[type="tel"],
+.mainForm input[type="email"] {
 	height: 42px;
 	border: 1px solid #00c4de;
 	font-size: 20px;
 	padding: 10px;
+	border-radius: 10px;
+	padding: 25px;
+	width: 295px;
+	border-bottom-right-radius: 0px;
 }
-
+.mainForm input:focus{
+	outline: none;
+}
+.mainForm label, .mainForm .label {
+	color: #333;
+	line-height: 1.5;
+	font-size: 18px;
+}
 .mainForm input,
 .mainForm select,
 .mainForm textarea {
@@ -263,7 +281,10 @@ left: 60px !important;
 	color: red;
 }
 
-.mrSelector {
+.mrSelector,
+.Gender,
+.qualifications,
+.phone1{
 	width: 300px;
 	height: 80px;
 	float: left;
@@ -275,11 +296,11 @@ left: 60px !important;
 	font-size: 18px;
 }
 
-.mrSelector select {
+.mrSelector select, .Gender select {
 	position: absolute;
 	padding: 10px;
 	width: 280px;
-	height: 42px;
+	height: 52px;
 	border: none;
 	font-size: 18px;
 	border: 1px solid #00c4de;
@@ -289,25 +310,26 @@ left: 60px !important;
 	appearance: button;
 	outline: none;
 	background-position-x: 244px;
+	border-radius: 10px;
+  border-bottom-right-radius: 0px;
 }
 
-.mrSelector::before {
-	content: "\f13a";
-	font-family: FontAwesome;
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 20%;
-	height: 100%;
-	text-align: center;
-	font-size: 28px;
-	line-height: 45px;
-	color: rgba(255, 255, 255, 0.5);
-	background-color: rgba(255, 255, 255, 0.1);
-	pointer-events: none;
+.mrSelector .prefix{
+		width: 100px;
+		background-position-x: 74px;
 }
 
-.mrName {
+.GenderSel{
+	width: 130px !important;
+	background-position-x: 100px !important;
+}
+
+
+
+.mrName,
+.emailIDForm,
+.certifications,
+.phone2{
 	width: 300px;
 	height: 80px;
 	float: left;
@@ -316,12 +338,11 @@ left: 60px !important;
 
 .mrName input {
 	width: 500px;
+	border-radius: 5px;
 }
 
-
 /* radio */
-
-.Gender {
+.Gender, .phone1 {
 	margin-top: 40px;
 }
 
@@ -373,11 +394,11 @@ left: 60px !important;
 /* social media icon end */
 
 .emailIDForm,
-.phoneForm,
 .qualifications,
 .yearsofexperience,
 .designOrproject,
-.designType {
+.designType,
+.phone2 {
 	margin-top: 40px;
 }
 
@@ -386,38 +407,29 @@ left: 60px !important;
 	display: inline-block;
 }
 
-.emailIDForm input[type="email"] {
-	width: 500px;
-}
-
-.phoneForm input[type="tel"] {
-	width: 300px;
-}
-
 .mainSection .textareas {
 	margin-top: 40px;
 }
 
 .mainSection textarea {
 	font-size: 20px;
-	width: 100%;
-	border: 1px solid #90e2ee;
-	resize: none;
+  width: 80%;
+  border: 1px solid #90e2ee;
+  resize: none;
+  border-radius: 5px;
 }
 
 .qualifiSector select,
 .yearsofexperience select,
 .designOrprojectSector select {
-	width: 500px;
-	background-position-x: 465px !important
+	width: 280px;
 }
-
 .certifications {
 	margin-top: 40px;
 }
 
 #certificationsID {
-	width: 500px;
+	width: 295px;
 }
 
 .imageUpload {
@@ -427,7 +439,7 @@ left: 60px !important;
 .imageUpload .upload,
 .submitBtn {
 	width: 100%;
-	height: 300px;
+	height: 150px;
 	border: 1px solid #00c4de;
 	margin-top: 10px;
 	position: relative;
@@ -441,7 +453,10 @@ left: 60px !important;
 	transform: translate(-50%, -50%);
 	color: #00c4de;
 }
-
+.submitBtn > input[type="submit"]{
+	border: 1px solid #84d8e1;
+	font-size: 22px;
+}
 .submitBtn {
 	border: none;
 	height: 200px;
@@ -449,24 +464,13 @@ left: 60px !important;
 
 
 .submitBtn input[type="submit"]{
-	width: 200px;
+	padding: 10px 30px;
 	background-color: #fff;
 	cursor: pointer;
 	border-radius: 5px;
 	color: #00c4de;
 }
 
-.upload_btn{
-    width: 200px;
-	background-color: #fff;
-	cursor: pointer;
-	border-radius: 5px;
-	color: #00c4de;
-	text-decoration: none;
-	padding: 6px 65px;
-	border: 1px solid #00c4de;
-	margin-left: 420px;
-}
 
 /* design Upload page start  */
 .restBtn{
@@ -475,4 +479,16 @@ left: 60px !important;
 .restBtn{
 	color: #00c4de;
 }
+.designUploadNameID{
+	margin-top: 40px;
+}
+
+.submitBtn > .restBtn .design_btn {
+border: 1px solid #00c4de;
+padding: 10px 60px;
+background-color: #fff;
+font-size: 22px;
+margin: 0 20px;
+}
+
 /* design Upload page end */

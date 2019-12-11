@@ -34,7 +34,7 @@
          <div class="navItems">
             <div class="menuBtns">
                <ul>
-                  <li><a  id="setting" href="#">Settings &nbsp; <i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                  <!-- <li><a  id="setting" href="#">Settings &nbsp; <i class="fa fa-cog" aria-hidden="true"></i></a></li> -->
                   <li><a href="#">Logout &nbsp; <i class="fa fa-power-off" aria-hidden="true"></i></a></li>
                </ul>
             </div>
@@ -42,7 +42,7 @@
       </nav>
       <nav class="vertical-menu">
          <div id="sidebar-wrapper">
-           <div id="btn-triangle-left"></div>
+           <!-- <div id="btn-triangle-left"></div> -->
             <ul id="sidebar-nav">
                <li>
                   <a href="#">
@@ -50,7 +50,15 @@
                   <span class="btnText">Overview</span>
                   </a>
                </li>
+
                <li>
+                  <a class="active" href="#">
+                  <span class="imgs"><img src="/static/img/profilesettings.svg" alt=""></span>
+                  <span class="btnText">Profile Settings</span>
+                  </a>
+               </li>
+
+               <!-- <li>
                   <a href="#">
                   <span class="imgs"><img src="/static/img/appointments.svg" alt=""></span>
                   <span class="btnText">Appointments</span>
@@ -60,12 +68,6 @@
                   <a class="arrowBtn" href="#">
                   <span class="imgs"><img src="/static/img/iungocloud.svg" alt=""></span>
                   <span class="btnText">Iungo Cloud</span>
-                  </a>
-               </li>
-               <li>
-                  <a class="active" href="#">
-                  <span class="imgs"><img src="/static/img/profilesettings.svg" alt=""></span>
-                  <span class="btnText">Profile Settings</span>
                   </a>
                </li>
                <li>
@@ -85,16 +87,14 @@
                   <span class="imgs"><img src="/static/img/reports.svg" alt=""></span>
                   <span class="btnText">Reports</span>
                   </a>
-               </li>
+               </li> -->
             </ul>
          </div>
       </nav>
       <aside class="mainSection">
-         <form id="profile_form" class="mainForm" enctype="multipart/form-data" action="{% url 'profile' %}" method="POST" role="form">
-            {% csrf_token %}
-            <input type="hidden" name="user_id" value="{{user.id}}">
+         <form class="mainForm" action="#" method="post">
             <div class="mrSelector">
-               <p class="label">Prefix</p>
+               <label for="">Prefix<sup>*</sup></label><br>
                {{form.prefix}}
                {{form.prefix.errors}}
             </div>
@@ -102,68 +102,71 @@
                <div class="mrName">
                   <label for="userName">Name<sup>*</sup></label>
                   <input id="userName" type="text" name="userName" value="{{user.first_name}} {{user.last_name}}" disabled >
-                  <h6>Name cannot be changed after submitting once. Name, phone number, email id are the things needs permission to be changed.</h6>
+<!--                  <h6>Name cannot be changed after submitting once. Name, phone number, email id are the things needs permission to be changed.</h6>-->
                </div>
             {% else %}
                <div class="mrName">
                   <label for="userName">Name<sup>*</sup></label>
                   <input id="userName" type="text" name="userName" required >
-                  <p>Name cannot be changed after submitting once. Name, phone number, email id are the things needs permission to be changed.</p>
+<!--                  <p>Name cannot be changed after submitting once. Name, phone number, email id are the things needs permission to be changed.</p>-->
                </div>
             {% endif %}
             <br style="clear: both;">
             {% if user.portfolio.gender == 'MALE'%}
                <div class="Gender">
-                  <p>Gender<sup>*</sup></p>
-                  <br>
-                  <label for="male" class="radio-custom-label">Male</label>
-               </div>
+              <label for="">Gender<sup>*</sup></label><br>
+              <select class="GenderSel">
+                 <option value="Male">Male</option>
+                 <option value="Female">Female</option>
+              </select>
+            </div>
             {% elif user.portfolio.gender == 'FEMALE'%}
                <div class="Gender">
-                  <p>Gender<sup>*</sup></p>
-                  <br>
-                  <label for="female" class="radio-custom-label">Female</label>
-               </div>
+              <label for="">Gender<sup>*</sup></label><br>
+              <select class="GenderSel">
+                 <option value="Male">Male</option>
+                 <option value="Female">Female</option>
+              </select>
+            </div>
             {% else %}
                <div class="Gender">
-                  <p>Gender<sup>*</sup></p>
-                  <br>
-                  <input id="male" class="radio-custom" name="male" type="radio" >
-                  <label for="male" class="radio-custom-label">Male</label>
-                  <input id="female" class="radio-custom" name="female" type="radio" >
-                  <label for="female" class="radio-custom-label">Female</label>
-               </div>
+              <label for="">Gender<sup>*</sup></label><br>
+              <select class="GenderSel">
+                 <option value="Male">Male</option>
+                 <option value="Female">Female</option>
+              </select>
+            </div>
             {% endif %}
             <div class="emailIDForm">
-               <label for="id_email">Email-id<sup>*</sup></label><br>
-               <input disabled="disabled" value="{{user.email}}">
+               <label for="emailID">Email-id<sup>*</sup></label><br>
+               <input id="emailID" type="email" name="emailID" placeholder="email Id"  value="{{user.email}}" disabled>
+             </div>
+            <br style="clear: both;">
+            <div class="phone1">
+              <label for="phoneNum1">Primary Number<sup>*</sup></label><br>
+              <input id="phoneNum1" type="tel" name="phoneNum1" placeholder="+91"  value="{{user.username}}" disabled>
             </div>
-            <div class="phoneForm">
-               <label class="contactLabel">Contact Number</label><br>
-               <label class="label">Primary Number</label><br>
-               <input disabled="disabled" value="{{user.username}}">
-            </div>
-            <div class="phoneForm">
-               <label>Secondary Number</label><br>
+            <div class="phone2">
+              <label for="id_secondary_phone">Secondary Number<sup>*</sup></label><br>
                {{form.secondary_phone}}
                {{form.secondary_phone.errors}}
             </div>
+            <br style="clear: both;">
             <div class="textareas">
                <p class="label">About Me/ Description</p>
                {{form.about_me}}
                {{form.about_me.errors}}
-               <p style="float: right; font-size: 18px;">250 characters long</p>
+               <p style="float: right; font-size: 18px; margin-right: 238px;">250 characters long</p>
             </div>
             <div class="qualifications">
-               <p class="label">Qualifications<sup>*</sup> </p>
+               <label for="id_qualification">Qualifications<sup>*</sup></label><br>
                <div class="mrSelector qualifiSector ">
                   {{form.qualification}}
                   {{form.qualification.errors}}
                </div>
             </div>
-            <br style="clear: both;">
-            <div class="experience">
-               <p class="label">Experience(In years)<sup>*</sup> </p>
+            <div class="certifications">
+                <label for="id_experience">Years Of Experience<sup>*</sup></label><br>
                <div class="mrSelector qualifiSector ">
                   {{form.experience}}
                   {{form.experience.errors}}
@@ -177,10 +180,9 @@
                   {{form.budget.erors}}
                </div>
             </div>
-            <br style="clear: both;">
-            <div class="Upload">
-               <p class="label">Image<sup>*</sup> </p>
-               <div class="upload">
+            <div class="certifications">
+               <p class="label">Profile Picture<sup>*</sup> </p>
+               <div class="mrSelector qualifiSector">
                   {{ form.profile_pic }}
                   {{ form.profile_pic.errors }}
                </div>
@@ -193,21 +195,21 @@
                   {{ form.category.errors }}
                </div>
             </div>
-            <br style="clear: both;">
-            <div class="sub_category">
+            <div class="certifications">
                <p class="label">Sub Category<sup>*</sup> </p>
                <div class="mrSelector qualifiSector">
                   {{ form.sub_category }}
                   {{ form.sub_category.errors }}
                </div>
             </div>
+
+            <br style="clear: both;">
             <div class="submitBtn">
                <input type="submit" value="Submit"/>
             </div>
-            <br style="clear: both">
-            <a class="upload_btn" href="/design_upload">Upload Designs and Projects</a>
          </form>
       </aside>
+      <script src="/static/js/main.js"></script>
 
       <script type="text/javascript">
 
