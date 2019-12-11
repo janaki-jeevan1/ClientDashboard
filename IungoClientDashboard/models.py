@@ -24,16 +24,20 @@ PREFIX_CHOICES = (
 RATING_CHOICES = [(i,i) for i in range(1,6)]
 
 EXPERIENCE_CHOICES = [
-    ('0-5', '6-10'),
-    ('11-15', '16-20'),
-    ('21-25', '26-30'),
-    ('31-35', '36-40'),
-    ('41-45', '46-50'),
-    ('51-55', '56-60'),
-    ('61-65', '66-70'),
-    ('71-75', '76-80'),
-    ('81-85', '86-90'),
-    ('91-95', '96-100'),
+    ('0-5', '0-5'),
+    ('6-10', '6-10'),
+    ('11-15', '11-15'),
+    ('16-20', '16-20'),
+    ('21-25', '21-25'),
+    ('26-30', '26-30'),
+    ('31-35', '31-35'),
+    ('36-40', '36-40'),
+    ('41-45', '41-45'),
+    ('46-50', '46-50'),
+    ('51-55', '51-55'),
+    ('56-60', '56-60'),
+    ('61-65', '61-65'),
+    ('66-70', '66-70'),
 ]
 
 BUDGET_CHOICES = (
@@ -156,7 +160,7 @@ class Portfolio(models.Model):
     prefix = models.CharField(verbose_name="Prefix", max_length=3, choices=PREFIX_CHOICES)
     gender = models.CharField(verbose_name="Gender", max_length=10, choices=GENDER_CHOICES)
     mobile_phone = models.CharField(verbose_name="Mobile phone", max_length=10, unique=True, blank=False, null=True)
-    secondary_phone = models.CharField(verbose_name="Secondary phone", max_length=10, unique=True, blank=False,
+    secondary_phone = models.CharField(verbose_name="Secondary phone", max_length=10, blank=False,
                                        null=True)
     date_of_birth = models.DateField(verbose_name='Date of Birth', null=True, blank=True)
     about_me = models.CharField(verbose_name="About me ", blank=True, max_length=250)

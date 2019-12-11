@@ -18,17 +18,13 @@
                {{form.design_name.errors}}
             </div>
             <br style="clear: both;">
-            <div class="imageUpload">
+            <div class="uploadFormimageUpload">
                <p class="label">Project Images<sup>*</sup> </p>
                {{form.design_images}}
                {{form.design_images.errors}}
             </div>
             <div class="submitBtn">
-                <div class="restBtn">
                    <input type="submit" value="Save"/>
-<!--                   <input type="submit" value="Edit"/>-->
-<!--                    <input type="submit" value="Delete"/>-->
-                </div>
             </div>
          </form>
         {% if total_user_designs %}
@@ -54,17 +50,14 @@
                {{form.project_name.errors}}
             </div>
             <br style="clear: both;">
-            <div class="imageUpload">
+            <div class="uploadFormimageUpload">
                <p class="label">Project Images<sup>*</sup> </p>
                {{form.project_images}}
                {{form.project_images.errors}}
             </div>
             <div class="submitBtn">
-                <div class="restBtn">
                    <input type="submit" value="Save"/>
-<!--                   <input type="submit" value="Edit"/>-->
-<!--                    <input type="submit" value="Delete"/>-->
-                </div>
+
             </div>
          </form>
         {% if total_user_projects %}

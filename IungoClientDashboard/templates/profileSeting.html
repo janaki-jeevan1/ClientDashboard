@@ -92,7 +92,8 @@
          </div>
       </nav>
       <aside class="mainSection">
-         <form class="mainForm" action="#" method="post">
+         <form class="mainForm" action="/portfolio/" method="post">
+            {% csrf_token %}
             <div class="mrSelector">
                <label for="">Prefix<sup>*</sup></label><br>
                {{form.prefix}}
@@ -112,29 +113,11 @@
                </div>
             {% endif %}
             <br style="clear: both;">
-            {% if user.portfolio.gender == 'MALE'%}
                <div class="Gender">
-              <label for="">Gender<sup>*</sup></label><br>
-              <select class="GenderSel">
-                 <option value="Male">Male</option>
-                 <option value="Female">Female</option>
-              </select>
-            </div>
-            {% elif user.portfolio.gender == 'FEMALE'%}
-               <div class="Gender">
-              <label for="">Gender<sup>*</sup></label><br>
-              <select class="GenderSel">
-                 <option value="Male">Male</option>
-                 <option value="Female">Female</option>
-              </select>
-            </div>
-            {% else %}
-               <div class="Gender">
-              <label for="">Gender<sup>*</sup></label><br>
+               <label for="id_gender">Gender<sup>*</sup></label><br>
                   {{form.gender}}
                   {{form.gender.errors}}
-            </div>
-            {% endif %}
+               </div>
             <div class="emailIDForm">
                <label for="emailID">Email-id<sup>*</sup></label><br>
                <input id="emailID" type="email" name="emailID" placeholder="email Id"  value="{{user.email}}" disabled>
@@ -179,8 +162,8 @@
                </div>
             </div>
             <div class="uploadProfilePicture">
-              <label for="userPictureUpload">Profile Picture<sup>*</sup></label><br>
-              {{form.profile_pic}}
+              <label for="id_profile_pic">Profile Picture<sup>*</sup></label><br>
+               {{form.profile_pic}}
                {{form.profile_pic.errors}}
             </div>
             <br style="clear: both;">

@@ -481,8 +481,8 @@ left: 60px !important;
 
 /* upload profile pic */
 
-.uploadProfilePicture input[type=file] {
-	cursor: pointer;
+.uploadProfilePicture input[type=file], .uploadFormimageUpload input[type=file] {
+  cursor: pointer;
   width: 280px;
   height: 52px;
   overflow: hidden;
@@ -491,8 +491,8 @@ left: 60px !important;
   border-bottom-right-radius: 0px;
 }
 
-.uploadProfilePicture input[type=file]:before {
-	width: 158px;
+.uploadProfilePicture input[type=file]:before, .uploadFormimageUpload input[type=file]:before {
+  width: 158px;
   height: 32px;
   font-size: 16px;
   line-height: 32px;
@@ -529,3 +529,45 @@ margin: 0 20px;
 }
 
 /* design Upload page end */
+
+.designOrproject label{
+    margin-bottom: 10px;
+    display: inline-block;
+    font-size: 18px;
+}
+.designOrproject label sup{
+color: red;
+}
+.mainSection .option{
+    background-color: #fff;
+    color: #fff;
+
+}
+
+.mainSection .option a{
+	padding: 10px 30px;
+	background-color: #fff;
+	cursor: pointer;
+	border-radius: 5px;
+	color: #00c4de;
+	border: 1px solid #00c4de;
+	font-size: 20px;
+}
+.mainSection .option a:hover{
+    background-color: #00c4de;
+    color: #fff;
+}
+
+.mainSection .option.btnL{
+float: left;
+}
+
+.mainSection .option.btnR{
+float: right;
+}
+
+.mainSection .option a{
+    text-decoration: none;
+    color: #00c4de;
+}
+

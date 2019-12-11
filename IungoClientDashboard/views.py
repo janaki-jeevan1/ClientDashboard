@@ -44,7 +44,7 @@ def send_sms_user(request):
 
 def logout(request):
     auth.logout(request)
-    return render_to_response('login.html')
+    return render(request, 'login.html', {})
 
 def send_registration_confirmation(username):
     # user = request.user
@@ -423,7 +423,7 @@ class PortfolioView(View):
     def get(self, request):
 
         user = request.user
-        data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name, 'gender':gender,
+        data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name, 'gender':user.portfolio.gender,
                 'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
                 'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,
                 'budget': user.portfolio.budget, 'category': user.portfolio.category,
@@ -435,17 +435,18 @@ class PortfolioView(View):
 
         form = PortfolioForm(request.POST, request.FILES)
         if form.is_valid():
-            user_id = request.POST.get('user_id')
-            user_details = User.objects.get(id=user_id)
-            username = request.POST.get('userName').split(' ')
-            user_details.first_name = username[0]
-            username.pop(0)
-            if username:
-                user_details.last_name = " ".join(username)
-            user_details.save()
-            user_details.portfolio.profile_pic = form.cleaned_data['profile_pic']
+            user_details = User.objects.get(id=request.user.id)
+            if request.POST.get('userName'):
+                username = request.POST.get('userName').split(' ')
+                user_details.first_name = username[0]
+                username.pop(0)
+                if username:
+                    user_details.last_name = " ".join(username)
+                user_details.save()
+            if not user_details.portfolio.profile_pic and form.cleaned_data['profile_pic']:
+                user_details.portfolio.profile_pic = form.cleaned_data['profile_pic']
             user_details.portfolio.budget = form.cleaned_data['budget']
-            user_details.gender = form.cleaned_data['gender']
+            user_details.portfolio.gender = form.cleaned_data['gender']
             user_details.portfolio.experience = form.cleaned_data['experience']
             user_details.portfolio.qualification = form.cleaned_data['qualification']
             user_details.portfolio.about_me = form.cleaned_data['about_me']
@@ -454,9 +455,15 @@ class PortfolioView(View):
             user_details.portfolio.prefix = form.cleaned_data['prefix']
             user_details.portfolio.secondary_phone = form.cleaned_data['secondary_phone']
             user_details.save()
-            form = PortfolioForm()
+            user = request.user
+            data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name, 'gender': user.portfolio.gender,
+                    'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
+                    'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,
+                    'budget': user.portfolio.budget, 'category': user.portfolio.category,
+                    'sub_category': user.portfolio.sub_category, 'secondary_phone': user.portfolio.secondary_phone}
+            form = PortfolioForm(initial=data)
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'user':user})
 
 def load_sub_category(request):
     category_id = request.GET.get('category')
