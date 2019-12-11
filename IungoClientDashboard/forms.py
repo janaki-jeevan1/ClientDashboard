@@ -12,6 +12,7 @@ from allauth.account.forms import LoginForm, PasswordField
 GENDER_CHOICES = (
     ('MALE', 'MALE'),
     ('FEMALE', 'FEMALE'),
+    ('OTHERS', 'OTHERS'),
 )
 
 
@@ -111,7 +112,7 @@ class PortfolioForm(forms.ModelForm):
 
     class Meta:
         model = Portfolio
-        fields = ['prefix', 'secondary_phone',
+        fields = ['prefix', 'secondary_phone', 'gender',
                   'experience', 'qualification', 'profile_pic', 'about_me', 'budget', 'category',
                   'sub_category',
                   ]

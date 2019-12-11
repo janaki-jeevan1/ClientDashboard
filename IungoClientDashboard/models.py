@@ -59,6 +59,7 @@ QUALIFICATION_CHOICES = (
 GENDER_CHOICES = (
     ('MALE', 'MALE'),
     ('FEMALE', 'FEMALE'),
+    ('OTHERS', 'OTHERS'),
 )
 
 def change_file_path(instance, filename):

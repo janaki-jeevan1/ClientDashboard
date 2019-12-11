@@ -35,7 +35,7 @@
             <div class="menuBtns">
                <ul>
                   <!-- <li><a  id="setting" href="#">Settings &nbsp; <i class="fa fa-cog" aria-hidden="true"></i></a></li> -->
-                  <li><a href="#">Logout &nbsp; <i class="fa fa-power-off" aria-hidden="true"></i></a></li>
+                  <li><a href="/logout">Logout &nbsp; <i class="fa fa-power-off" aria-hidden="true"></i></a></li>
                </ul>
             </div>
          </div>
@@ -131,10 +131,8 @@
             {% else %}
                <div class="Gender">
               <label for="">Gender<sup>*</sup></label><br>
-              <select class="GenderSel">
-                 <option value="Male">Male</option>
-                 <option value="Female">Female</option>
-              </select>
+                  {{form.gender}}
+                  {{form.gender.errors}}
             </div>
             {% endif %}
             <div class="emailIDForm">
@@ -159,14 +157,14 @@
                <p style="float: right; font-size: 18px; margin-right: 238px;">250 characters long</p>
             </div>
             <div class="qualifications">
-               <label for="id_qualification">Qualifications<sup>*</sup></label><br>
+               <label for="QualificationsID">Qualifications<sup>*</sup></label><br>
                <div class="mrSelector qualifiSector ">
                   {{form.qualification}}
                   {{form.qualification.errors}}
                </div>
             </div>
-            <div class="certifications">
-                <label for="id_experience">Years Of Experience<sup>*</sup></label><br>
+            <div class="yearsofexperience">
+                <label for="certificationsID">Years Of Experience<sup>*</sup></label><br>
                <div class="mrSelector qualifiSector ">
                   {{form.experience}}
                   {{form.experience.errors}}
@@ -174,32 +172,30 @@
             </div>
             <br style="clear: both;">
             <div class="budget">
-               <p class="label">Budget(In Lacs)<sup>*</sup> </p>
+               <label for="budgetId">Budget<sup>*</sup></label><br>
                <div class="mrSelector qualifiSector ">
                   {{form.budget}}
-                  {{form.budget.erors}}
+                  {{form.budget.errors}}
                </div>
             </div>
-            <div class="certifications">
-               <p class="label">Profile Picture<sup>*</sup> </p>
-               <div class="mrSelector qualifiSector">
-                  {{ form.profile_pic }}
-                  {{ form.profile_pic.errors }}
-               </div>
+            <div class="uploadProfilePicture">
+              <label for="userPictureUpload">Profile Picture<sup>*</sup></label><br>
+              {{form.profile_pic}}
+               {{form.profile_pic.errors}}
             </div>
             <br style="clear: both;">
             <div class="category">
-               <p class="label">Category<sup>*</sup> </p>
-               <div class="mrSelector qualifiSector">
-                  {{ form.category }}
-                  {{ form.category.errors }}
+               <label for="categoryID">Category<sup>*</sup></label><br>
+               <div class="mrSelector qualifiSector ">
+                  {{form.category}}
+                  {{form.category.errors}}
                </div>
             </div>
-            <div class="certifications">
-               <p class="label">Sub Category<sup>*</sup> </p>
-               <div class="mrSelector qualifiSector">
-                  {{ form.sub_category }}
-                  {{ form.sub_category.errors }}
+            <div class="subCategory">
+                <label for="id_sub_category">Sub Category<sup>*</sup></label><br>
+               <div class="mrSelector qualifiSector ">
+                  {{form.sub_category}}
+                  {{form.sub_category.errors}}
                </div>
             </div>
 

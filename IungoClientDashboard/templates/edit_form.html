@@ -35,7 +35,7 @@
             <div class="menuBtns">
                <ul>
 <!--                  <li><a  id="setting" href="#">Settings &nbsp; <i class="fa fa-cog" aria-hidden="true"></i></a></li>-->
-                  <li><a href="#">Logout &nbsp; <i class="fa fa-power-off" aria-hidden="true"></i></a></li>
+                  <li><a href="/logout">Logout &nbsp; <i class="fa fa-power-off" aria-hidden="true"></i></a></li>
                </ul>
             </div>
          </div>
@@ -160,7 +160,7 @@
                         <div class="submitBtn">
                             <div class="restBtn">
                                <input type="submit" value="Update"/>
-                                <input type="submit" value="Delete"/>
+                                <a href="{% url 'delete_design' %}?number={{project.0.project_number}}&type=2">Delete</a>
                             </div>
                         </div>
                      </form>
