@@ -304,6 +304,15 @@ def upload_details(request):
     else:
         return render(request, 'designUploading.html', {})
 
+def delete_design(request):
+    number = request.GET.get('number')
+    type = request.GET.get('type')
+    if type == '1':
+        Design.objects.filter(user=request.user, design_number=number).delete()
+    if type == '2':
+        Project.objects.filter(user=request.user, project_number=number).delete()
+    return render(request, 'designUploading.html', {})
+
 def load_upload_form(request):
 
     detail = request.GET.get('detail')

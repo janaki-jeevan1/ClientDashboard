@@ -128,7 +128,7 @@
                         <div class="submitBtn">
                             <div class="restBtn">
                                <input type="submit" value="Update"/>
-                                <input type="submit" value="Delete"/>
+                                <a href="{% url 'delete_design' %}?number={{design.0.design_number}}&type=1">Delete</a>
                             </div>
                         </div>
                      </form>
