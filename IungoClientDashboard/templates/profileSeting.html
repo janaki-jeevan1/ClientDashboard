@@ -92,7 +92,7 @@
          </div>
       </nav>
       <aside class="mainSection">
-         <form class="mainForm" action="/portfolio/" method="post">
+         <form class="mainForm" action="/portfolio/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mrSelector">
                <label for="">Prefix<sup>*</sup></label><br>
@@ -163,8 +163,10 @@
             </div>
             <div class="uploadProfilePicture">
               <label for="id_profile_pic">Profile Picture<sup>*</sup></label><br>
-               {{form.profile_pic}}
-               {{form.profile_pic.errors}}
+               <div class="mrSelector qualifiSector ">
+                  {{form.profile_pic}}
+                  {{form.profile_pic.errors}}
+               </div>
             </div>
             <br style="clear: both;">
             <div class="category">
@@ -187,6 +189,10 @@
                <input type="submit" value="Submit"/>
             </div>
          </form>
+         <br style="clear: both;">
+            <div class="submitBtn">
+               <a href="/design_upload"><input type="submit" value="Upload Designs and Projects"/></a>
+            </div>
       </aside>
       <script src="/static/js/main.js"></script>
 

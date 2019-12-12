@@ -434,6 +434,7 @@ class PortfolioView(View):
     def post(self, request):
 
         form = PortfolioForm(request.POST, request.FILES)
+        user = request.user
         if form.is_valid():
             user_details = User.objects.get(id=request.user.id)
             if request.POST.get('userName'):

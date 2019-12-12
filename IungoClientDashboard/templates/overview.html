@@ -26,10 +26,14 @@
          <div class="userProfile">
             <div id="user">
                <div class="imgtag">
-                  <img src="/static/img/user.jpg" alt="user">
+                  {% if user.portfolio.profile_pic %}
+                     <img src="/media/{{user.portfolio.profile_pic}}" alt="user">
+                  {% else %}
+                     <img src="/static/img/empty.png" alt="user">
+                  {% endif %}
                </div>
                <div class="name">
-                  <p>Alex John</p>
+                  <p>{{user.first_name}} {{user.last_name}}</p>
                </div>
             </div>
          </div>

@@ -164,7 +164,7 @@ class Portfolio(models.Model):
                                        null=True)
     date_of_birth = models.DateField(verbose_name='Date of Birth', null=True, blank=True)
     about_me = models.CharField(verbose_name="About me ", blank=True, max_length=250)
-    profile_pic = models.ImageField(upload_to=content_file_name, blank=True, null=True, verbose_name="Profile Picture")
+    profile_pic = models.FileField(upload_to=content_file_name, blank=True, null=True, verbose_name="Profile Picture")
     location = models.CharField(verbose_name="location", max_length=30)
     client = models.BooleanField(verbose_name="Client", default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
