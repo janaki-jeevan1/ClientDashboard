@@ -25,57 +25,66 @@ import json
 # Create your views here.
 global_otp = []
 
+
 def random_with_N_digits(n):
-    range_start = 10**(n-1)
-    range_end = (10**n)-1
+    range_start = 10 ** (n - 1)
+    range_end = (10 ** n) - 1
     return randint(range_start, range_end)
+
 
 def sms_user():
     otp = random_with_N_digits(4)
     return otp
 
+
 def send_sms_user(request):
     number = request.GET.get('number')
     generate_otp = sms_user()
-    resp = sendSMS('vV4ixMZmyok-YTys5TMHMljOCzBrfZDYc6aQzUED2B', '91'+number,
-                   'TXTLCL', 'OTP to login '+str(generate_otp))
+    resp = sendSMS('vV4ixMZmyok-YTys5TMHMljOCzBrfZDYc6aQzUED2B', '91' + number,
+                   'TXTLCL', 'OTP to login ' + str(generate_otp))
     global_otp.append(generate_otp)
     return HttpResponse('')
+
 
 def logout(request):
     auth.logout(request)
     return render(request, 'login.html', {})
 
+
 def send_registration_confirmation(username):
     # user = request.user
     user = User.objects.get(username=username)
-    confirmation_code = ''.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(33))
-    ccc = ConfirmationCode(confirmation_code=confirmation_code,user=user)
+    confirmation_code = ''.join(
+        random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(33))
+    ccc = ConfirmationCode(confirmation_code=confirmation_code, user=user)
     ccc.save()
     p = ccc
     title = "Thanks for registration"
     content = "http://192.168.0.79:8000/confirmation/" + str(p.confirmation_code) + "/" + user.username
     send_mail(title, content, 'bharath@iungoadvantec.com', [user.email], fail_silently=False)
 
+
 def confirmation(request, confirmation_code, username):
     try:
         username = User.objects.get(username=username)
-        ccc = ConfirmationCode(confirmation_code=confirmation_code,user=username)
-        if ccc.confirmation_code == confirmation_code and username.date_joined > timezone.make_aware(datetime.datetime.now()-datetime.timedelta(days=1)):
+        ccc = ConfirmationCode(confirmation_code=confirmation_code, user=username)
+        if ccc.confirmation_code == confirmation_code and username.date_joined > timezone.make_aware(
+                datetime.datetime.now() - datetime.timedelta(days=1)):
             username.is_active = True
             username.save()
-            username.backend='django.contrib.auth.backends.ModelBackend'
-            auth.login(request,username)
+            username.backend = 'django.contrib.auth.backends.ModelBackend'
+            auth.login(request, username)
         return HttpResponseRedirect('/welcome')
     except:
         return HttpResponseRedirect('/client_register')
+
 
 def welcome(request):
     context = {}
     return render(request, 'welcome.html', context)
 
-def client_register(request):
 
+def client_register(request):
     if request.method == "GET":
         context = {}
         context.update(csrf(request))
@@ -97,13 +106,14 @@ def client_register(request):
             obj.save()
             return redirect('/client_login')
         else:
-            return render(request, 'register.html', {'form':form})
+            return render(request, 'register.html', {'form': form})
+
 
 def auth_view(request):
-    username = request.POST.get('username','')
-    email = request.POST.get('email','')
-    password = request.POST.get('password','')
-    otp = request.POST.get('OTP','')
+    username = request.POST.get('username', '')
+    email = request.POST.get('email', '')
+    password = request.POST.get('password', '')
+    otp = request.POST.get('OTP', '')
     if username and password:
         user = auth.authenticate(username=username, password=password)
         try:
@@ -147,10 +157,10 @@ def auth_view(request):
         return HttpResponseRedirect('/portfolio')
     else:
         messages.error(request, 'Invalid Username or password')
-        return render(request,'login.html')
+        return render(request, 'login.html')
+
 
 def client_login(request):
-
     if request.method == 'GET':
         context = {}
         return render(request, 'login.html', context)
@@ -158,6 +168,7 @@ def client_login(request):
     if request.method == 'POST':
         context = {}
         return render(request, 'login.html', context)
+
 
 class Dashboard(View):
     template_name = "client_dashboard.html"
@@ -171,16 +182,17 @@ class Dashboard(View):
         context = {}
         return render(request, self.template_name, context)
 
-def dates_to_check(start_date,end_date):
+
+def dates_to_check(start_date, end_date):
     dates = []
     delta = end_date - start_date
 
-    for i in range(delta.days+1):
+    for i in range(delta.days + 1):
         dates.append(start_date + datetime.timedelta(days=i))
     return dates
 
-def Overview(request):
 
+def Overview(request):
     if request.method == 'GET':
         context = {}
         id = request.GET.get('id')
@@ -216,7 +228,7 @@ def Overview(request):
                     no_of_invoices = InvoicesProposalsUploads.objects.filter(user=request.user,
                                                                              date_time=date_check).values('invoices')
                     no_of_proposals = InvoicesProposalsUploads.objects.filter(user=request.user,
-                                                                             date_time=date_check).values('proposals')
+                                                                              date_time=date_check).values('proposals')
                     no_of_designs = DeisgnUploads.objects.filter(user=request.user, date_time=date_check)
                     design_dict['designs'] = len(no_of_designs)
                     design_dict['date'] = date_check.strftime("%Y-%m-%d")
@@ -243,6 +255,7 @@ def Overview(request):
         else:
             return render(request, 'overview.html', context)
 
+
 class AppointmentScheduler(View):
     template_name = "appointment_scheduler.html"
 
@@ -254,6 +267,7 @@ class AppointmentScheduler(View):
         context = {}
         return render(request, self.template_name, context)
 
+
 def upload_details(request):
     if request.method == 'GET':
         type = request.GET.get('type')
@@ -261,9 +275,9 @@ def upload_details(request):
             user = request.user
             design_number = request.GET.get('number')
             design = Design.objects.filter(design_number=design_number)
-            data = {'design_name':design[0].design_name, 'design_type':design[0].design_type}
+            data = {'design_name': design[0].design_name, 'design_type': design[0].design_type}
             form = DesignUploadsForm(initial=data)
-            return render(request, 'edit_form.html', {'form':form, 'type':type, 'user':user, 'design':design})
+            return render(request, 'edit_form.html', {'form': form, 'type': type, 'user': user, 'design': design})
         if type == '2':
             user = request.user
             project_number = request.GET.get('number')
@@ -296,13 +310,14 @@ def upload_details(request):
                 obj = form.save(commit=False)
                 for f in files:
                     Project.objects.create(user=request.user, project_type=form.cleaned_data['project_type'],
-                                          project_name=form.cleaned_data['project_name'], project_images=f,
-                                          project_number=project_number)
+                                           project_name=form.cleaned_data['project_name'], project_images=f,
+                                           project_number=project_number)
                 return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
             else:
                 return render(request, 'edit_form.html', {'form': form, 'type': type, 'user': user})
     else:
         return render(request, 'designUploading.html', {})
+
 
 def delete_design(request):
     number = request.GET.get('number')
@@ -313,8 +328,8 @@ def delete_design(request):
         Project.objects.filter(user=request.user, project_number=number).delete()
     return render(request, 'designUploading.html', {})
 
-def load_upload_form(request):
 
+def load_upload_form(request):
     detail = request.GET.get('detail')
     user = request.user
     if detail:
@@ -335,7 +350,8 @@ def load_upload_form(request):
                             total_user_designs.append(particular_design)
                             numbers.remove(number)
                 return render(request, 'upload_form.html',
-                              {'form': form, 'type': type, 'user': user, 'total_user_designs': list(total_user_designs)})
+                              {'form': form, 'type': type, 'user': user,
+                               'total_user_designs': list(total_user_designs)})
         elif detail == 'project':
             if request.method == 'GET':
                 type = 2
@@ -356,13 +372,13 @@ def load_upload_form(request):
                               {'form': form, 'type': type, 'user': user, 'total_user_projects': total_user_projects})
         else:
             error = 1
-            return render(request, 'designUploading.html', {'error': error, 'user':user})
+            return render(request, 'designUploading.html', {'error': error, 'user': user})
     else:
         error = 1
-        return render(request, 'designUploading.html', {'error': error, 'user':user})
+        return render(request, 'designUploading.html', {'error': error, 'user': user})
+
 
 def design_upload(request):
-
     user = request.user
     form = DesignUploadsForm()
     type = 1
@@ -389,8 +405,8 @@ def design_upload(request):
             return render(request, 'upload_form.html', {'form': form, 'type': type, 'user': user})
     return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
 
-def project_upload(request):
 
+def project_upload(request):
     user = request.user
     form = ProjectUploadsForm()
     type = 2
@@ -417,13 +433,14 @@ def project_upload(request):
             return render(request, 'upload_form.html', {'form': form, 'type': type, 'user': user})
     return render(request, 'designUploading.html', {'form': form, 'type': type, 'user': user})
 
+
 class PortfolioView(View):
     template_name = "profileSeting.html"
 
     def get(self, request):
 
         user = request.user
-        data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name, 'gender':user.portfolio.gender,
+        data = {'id': user.id, 'userName': user.first_name + ' ' + user.last_name, 'gender': user.portfolio.gender,
                 'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
                 'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,
                 'budget': user.portfolio.budget, 'category': user.portfolio.category,
@@ -464,7 +481,8 @@ class PortfolioView(View):
                     'sub_category': user.portfolio.sub_category, 'secondary_phone': user.portfolio.secondary_phone}
             form = PortfolioForm(initial=data)
 
-        return render(request, self.template_name, {'form': form, 'user':user})
+        return render(request, self.template_name, {'form': form, 'user': user})
+
 
 def load_sub_category(request):
     category_id = request.GET.get('category')
