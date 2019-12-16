@@ -476,6 +476,7 @@ class PortfolioView(View):
             if request.POST.get('userName'):
                 username = request.POST.get('userName').split(' ')
                 user_details.first_name = username[0]
+                user_details.username = username[0]+"."+" ".join(username[1:])
                 username.pop(0)
                 if username:
                     user_details.last_name = " ".join(username)
