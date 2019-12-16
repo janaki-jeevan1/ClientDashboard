@@ -125,7 +125,7 @@
             <br style="clear: both;">
             <div class="phone1">
               <label for="phoneNum1">Primary Number<sup>*</sup></label><br>
-              <input id="phoneNum1" type="tel" name="phoneNum1" placeholder="+91"  value="{{user.username}}" disabled>
+              <input id="phoneNum1" type="tel" name="phoneNum1" placeholder="+91"  value="{{user.portfolio.mobile_phone}}" disabled>
             </div>
             <div class="phone2">
               <label for="id_secondary_phone">Secondary Number<sup>*</sup></label><br>
@@ -176,6 +176,7 @@
                   {{form.category.errors}}
                </div>
             </div>
+            <br style="clear: both;">
             <div class="subCategory">
                 <label for="id_sub_category">Sub Category<sup>*</sup></label><br>
                <div class="mrSelector qualifiSector ">

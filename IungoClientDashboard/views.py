@@ -83,7 +83,6 @@ def welcome(request):
     context = {}
     return render(request, 'welcome.html', context)
 
-
 def client_register(request):
     if request.method == "GET":
         context = {}
@@ -98,7 +97,6 @@ def client_register(request):
             obj = form.save(commit=False)
             obj.is_active = 0
             obj.email = form.cleaned_data["email"]
-            obj.username = form.cleaned_data["mobile_phone"]
             obj.save()
             obj.portfolio.mobile_phone = form.cleaned_data["mobile_phone"]
             obj.portfolio.client = 1
@@ -115,36 +113,44 @@ def auth_view(request):
     password = request.POST.get('password', '')
     otp = request.POST.get('OTP', '')
     if username and password:
-        user = auth.authenticate(username=username, password=password)
-        try:
-            userobj = User.objects.get(username=username)
-        except User.DoesNotExist:
+        number = User.objects.get(portfolio__mobile_phone=username)
+        if number:
+            user = auth.authenticate(username=number.username,password=password)
+            try:
+                userobj = User.objects.get(portfolio__mobile_phone=username)
+            except Portfolio.DoesNotExist:
+                messages.error(request, 'Phone number does not exist, please register and try again.')
+                return render(request, 'login.html')
+        else:
             messages.error(request, 'Phone number does not exist, please register and try again.')
             return render(request, 'login.html')
     elif email and password:
-        user = auth.authenticate(email=email, password=password)
-        try:
-            userobj = User.objects.get(email=email)
-        except User.DoesNotExist:
+        user_email = User.objects.get(email=email)
+        if user_email:
+            user = auth.authenticate(username=user_email.username, email=email, password=password)
+            try:
+                userobj = User.objects.get(email=email)
+            except User.DoesNotExist:
+                messages.error(request, 'Email does not exist, Please register and try again.')
+                return render(request, 'login.html')
+        else:
             messages.error(request, 'Email does not exist, Please register and try again.')
-            return render(request, 'login.html')
-    elif username and email and password:
-        user = auth.authenticate(username=username, password=password)
-        try:
-            userobj = User.objects.get(username=username)
-        except User.DoesNotExist:
-            messages.error(request, 'Phone number or email does not exist, please register and try again.')
             return render(request, 'login.html')
     elif username and global_otp:
         if otp == str(global_otp[0]):
-            user = auth.authenticate(username=username)
-            try:
-                userobj = User.objects.get(username=username)
-                if userobj.is_active is True:
-                    auth.login(request, user)
-                    global_otp.remove(global_otp[0])
-                    return HttpResponseRedirect('/portfolio')
-            except User.DoesNotExist:
+            number = User.objects.get(portfolio__mobile_phone=username)
+            if number:
+                user = auth.authenticate(username=number.username, portfolio__mobile_number=username)
+                try:
+                    userobj = User.objects.get(portfolio__mobile_phone=username)
+                    if userobj.is_active is True:
+                        auth.login(request, user)
+                        global_otp.remove(global_otp[0])
+                        return HttpResponseRedirect('/portfolio')
+                except User.DoesNotExist:
+                    messages.error(request, 'Phone number does not exist, please register and try again.')
+                    return render(request, 'login.html')
+            else:
                 messages.error(request, 'Phone number does not exist, please register and try again.')
                 return render(request, 'login.html')
         else:
@@ -206,7 +212,7 @@ def Overview(request):
                     click_dict = {}
                     no_of_clicks = Parameters.objects.filter(user=request.user, date_time=date_check)
                     clicks = []
-                    if no_of_clicks > 0:
+                    if len(no_of_clicks) > 0:
                         for i in no_of_clicks:
                             clicks.append(int(i.clicks))
                         clicks_total = sum(clicks)
@@ -216,35 +222,47 @@ def Overview(request):
                     click_dict['date'] = date_check.strftime("%Y-%m-%d")
                     final_list.append(click_dict)
                 if id == "2":
-                    feedback_dict = {}
-                    no_of_feedbacks = FeedBackRating.objects.filter(user=request.user, date_time=date_check)
-                    feedback_dict['feebacks'] = len(no_of_feedbacks)
-                    feedback_dict['date'] = date_check.strftime("%Y-%m-%d")
-                    final_list.append(feedback_dict)
-                if id == "3":
-                    design_dict = {}
-                    invoice_dict = {}
-                    proposals_dict = {}
-                    no_of_invoices = InvoicesProposalsUploads.objects.filter(user=request.user,
-                                                                             date_time=date_check).values('invoices')
-                    no_of_proposals = InvoicesProposalsUploads.objects.filter(user=request.user,
-                                                                              date_time=date_check).values('proposals')
-                    no_of_designs = DeisgnUploads.objects.filter(user=request.user, date_time=date_check)
-                    design_dict['designs'] = len(no_of_designs)
-                    design_dict['date'] = date_check.strftime("%Y-%m-%d")
-                    invoice_dict['invoices'] = len(no_of_invoices)
-                    invoice_dict['date'] = date_check.strftime("%Y-%m-%d")
-                    proposals_dict['proposals'] = len(no_of_proposals)
-                    proposals_dict['date'] = date_check.strftime("%Y-%m-%d")
-                    final_list.append(design_dict)
-                    final_list.append(invoice_dict)
-                    final_list.append(proposals_dict)
-                if id == "4":
-                    appointment_dict = {}
-                    no_of_appointment = Appointment.objects.filter(user=request.user, date_time=date_check)
-                    appointment_dict['appointments'] = len(no_of_appointment)
-                    appointment_dict['date'] = date_check.strftime("%Y-%m-%d")
-                    final_list.append(appointment_dict)
+                    views_dict = {}
+                    no_of_views = Parameters.objects.filter(user=request.user, date_time=date_check)
+                    views = []
+                    if len(no_of_views) > 0:
+                        for i in no_of_views:
+                            views.append(int(i.views))
+                        views_total = sum(views)
+                    else:
+                        views_total = 0
+                    views_dict['views'] = views_total
+                    views_dict['date'] = date_check.strftime("%Y-%m-%d")
+                    final_list.append(views_dict)
+                    # feedback_dict = {}
+                    # no_of_feedbacks = FeedBackRating.objects.filter(user=request.user, date_time=date_check)
+                    # feedback_dict['feebacks'] = len(no_of_feedbacks)
+                    # feedback_dict['date'] = date_check.strftime("%Y-%m-%d")
+                    # final_list.append(feedback_dict)
+                # if id == "3":
+                #     design_dict = {}
+                #     invoice_dict = {}
+                #     proposals_dict = {}
+                #     no_of_invoices = InvoicesProposalsUploads.objects.filter(user=request.user,
+                #                                                              date_time=date_check).values('invoices')
+                #     no_of_proposals = InvoicesProposalsUploads.objects.filter(user=request.user,
+                #                                                               date_time=date_check).values('proposals')
+                #     no_of_designs = DeisgnUploads.objects.filter(user=request.user, date_time=date_check)
+                #     design_dict['designs'] = len(no_of_designs)
+                #     design_dict['date'] = date_check.strftime("%Y-%m-%d")
+                #     invoice_dict['invoices'] = len(no_of_invoices)
+                #     invoice_dict['date'] = date_check.strftime("%Y-%m-%d")
+                #     proposals_dict['proposals'] = len(no_of_proposals)
+                #     proposals_dict['date'] = date_check.strftime("%Y-%m-%d")
+                #     final_list.append(design_dict)
+                #     final_list.append(invoice_dict)
+                #     final_list.append(proposals_dict)
+                # if id == "4":
+                #     appointment_dict = {}
+                #     no_of_appointment = Appointment.objects.filter(user=request.user, date_time=date_check)
+                #     appointment_dict['appointments'] = len(no_of_appointment)
+                #     appointment_dict['date'] = date_check.strftime("%Y-%m-%d")
+                #     final_list.append(appointment_dict)
             final_dates = []
             for date_str in dates:
                 final_dates.append(date_str.strftime("%Y-%m-%d"))
@@ -324,9 +342,9 @@ def delete_design(request):
     type = request.GET.get('type')
     if type == '1':
         Design.objects.filter(user=request.user, design_number=number).delete()
-    if type == '2':
+    elif type == '2':
         Project.objects.filter(user=request.user, project_number=number).delete()
-    return render(request, 'designUploading.html', {})
+    return redirect('/design_upload')
 
 
 def load_upload_form(request):
@@ -444,6 +462,7 @@ class PortfolioView(View):
                 'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
                 'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,
                 'budget': user.portfolio.budget, 'category': user.portfolio.category,
+                'profile_pic': user.portfolio.profile_pic,
                 'sub_category': user.portfolio.sub_category, 'secondary_phone': user.portfolio.secondary_phone}
         form = PortfolioForm(initial=data)
         return render(request, self.template_name, {'form': form, 'user': user})
@@ -461,7 +480,7 @@ class PortfolioView(View):
                 if username:
                     user_details.last_name = " ".join(username)
                 user_details.save()
-            if not user_details.portfolio.profile_pic and form.cleaned_data['profile_pic']:
+            if form.cleaned_data['profile_pic']:
                 user_details.portfolio.profile_pic = form.cleaned_data['profile_pic']
             user_details.portfolio.budget = form.cleaned_data['budget']
             user_details.portfolio.gender = form.cleaned_data['gender']
@@ -478,6 +497,7 @@ class PortfolioView(View):
                     'experience': user.portfolio.experience, 'qualification': user.portfolio.qualification,
                     'about_me': user.portfolio.about_me, 'prefix': user.portfolio.prefix,
                     'budget': user.portfolio.budget, 'category': user.portfolio.category,
+                    'profile_pic': user.portfolio.profile_pic,
                     'sub_category': user.portfolio.sub_category, 'secondary_phone': user.portfolio.secondary_phone}
             form = PortfolioForm(initial=data)
 

@@ -83,6 +83,7 @@ class DesignUploadsForm(forms.ModelForm):
             "form-control"
         self.fields['design_images'].widget.attrs['class'] = \
             "form-control"
+        self.fields['design_images'].required = False
 
 class ProjectUploadsForm(forms.ModelForm):
 
@@ -102,6 +103,7 @@ class ProjectUploadsForm(forms.ModelForm):
             "form-control"
         self.fields['project_images'].widget.attrs['class'] = \
             "form-control"
+        self.fields['project_images'].required = False
 
 class PortfolioForm(forms.ModelForm):
     about_me = forms.CharField(widget=forms.Textarea(attrs={'rows': 10, 'cols': 30}))

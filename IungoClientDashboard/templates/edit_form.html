@@ -121,13 +121,13 @@
                            <p class="label">Project Images<sup>*</sup> </p>
                            {% for des in design%}
                                 <img src="/media/{{des.design_images}}" width="200" height="100" alt=""/>
-                            {% endfor%}
+                            {% endfor %}
                             {{form.design_images}}
                             {{form.design_images.errors}}
                         </div>
                         <div class="submitBtn">
                                <input type="submit" value="Update"/>
-                                <a href="{% url 'delete_design' %}?number={{design.0.design_number}}&type=1"><input type="submit" value="Delete"/></a>
+                                <a href="{% url 'delete_design' %}?number={{design.0.design_number}}&type=1">Delete</a>
                         </div>
                      </form>
                 {% elif type == 2%}
